@@ -73,6 +73,22 @@ privatperson, och det ska finnas en säkerhetskopia på ett annat ställe.
 - **Är du med i en annan bygdegård** och vill göra något liknande? Koden och texterna får
   återanvändas enligt licenserna nedan.
 
+## Titta på sidan
+
+Sidan är vanliga HTML-filer utan byggsteg. Öppna `index.html` i en webbläsare, så fungerar
+den direkt.
+
+```
+index.html     startsidan med kalendern
+hyr.html       hyr bygdegården
+medlem.html    bli medlem
+om.html        om föreningen
+css/stil.css   gemensam stil, även för utskrift av kalendern
+bilder/        loggan och andra bilder
+```
+
+Text inom gul markering är platshållare som ska bytas ut innan sidan publiceras.
+
 ## Repot
 
 Det här repot är **publikt**. Allt som läggs här kan läsas av vem som helst och finns kvar i

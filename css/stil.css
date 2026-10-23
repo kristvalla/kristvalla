@@ -1,0 +1,167 @@
+/* Kristvalla Bygdegårdsförening – gemensam stil för alla sidor.
+   Inga externa typsnitt: vi använder de typsnitt som redan finns i besökarens enhet. */
+
+:root {
+  --papper: #faf8ec;      /* loggans ljusa bakgrund */
+  --kort: #ffffff;
+  --text: #24221f;
+  --dampad: #5b564e;
+  --falu: #781f19;        /* husets röda färg i loggan */
+  --falu-mork: #5a1712;
+  --ek: #3f5a2c;          /* ekbladen i loggan */
+  --linje: #d9d3c2;
+  --radie: 10px;
+  --bredd: 44rem;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { font-size: 112.5%; } /* 18 px som grund: stor text som standard */
+
+body {
+  margin: 0;
+  background: var(--papper);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.6;
+}
+
+img { max-width: 100%; height: auto; }
+
+a { color: var(--falu); text-underline-offset: 3px; }
+a:hover { color: var(--falu-mork); }
+a:focus-visible, button:focus-visible {
+  outline: 3px solid var(--ek);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+h1, h2, h3 {
+  font-family: var(--serif);
+  line-height: 1.2;
+  color: var(--falu);
+  margin: 0 0 .5em;
+}
+h1 { font-size: 2.1rem; }
+h2 { font-size: 1.5rem; margin-top: 2rem; }
+h3 { font-size: 1.15rem; color: var(--text); }
+
+p { margin: 0 0 1em; }
+
+.hoppa {
+  position: absolute; left: -999px; top: 0;
+  background: var(--falu); color: #fff; padding: .5rem 1rem;
+}
+.hoppa:focus { left: 1rem; top: 1rem; z-index: 10; }
+
+.utkast {
+  background: var(--ek); color: #fff;
+  text-align: center; font-size: .85rem; padding: .35rem 1rem;
+}
+
+.innehall { max-width: var(--bredd); margin: 0 auto; padding: 0 1.1rem; }
+
+/* Sidhuvud */
+.sidhuvud { border-bottom: 1px solid var(--linje); background: var(--papper); }
+.sidhuvud .innehall {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: .75rem 1.5rem; padding-top: .9rem; padding-bottom: .9rem;
+}
+.namn {
+  font-family: var(--serif); font-size: 1.2rem; font-weight: 700;
+  color: var(--falu); text-decoration: none; line-height: 1.2;
+}
+.namn small {
+  display: block; font-family: var(--sans); font-weight: 400;
+  font-size: .8rem; color: var(--dampad); letter-spacing: .02em;
+}
+.meny ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .25rem 1.1rem; }
+.meny a { text-decoration: none; color: var(--text); padding: .2rem 0; border-bottom: 2px solid transparent; }
+.meny a:hover { color: var(--falu); }
+.meny a[aria-current="page"] { color: var(--falu); border-bottom-color: var(--falu); }
+
+/* Startsidans topp */
+.topp { text-align: center; padding: 2rem 0 1rem; }
+.topp img { width: min(100%, 420px); }
+.ingress { font-size: 1.15rem; max-width: 36rem; margin: 1rem auto 0; }
+
+main { padding-bottom: 3rem; }
+.sida-topp { padding-top: 2rem; }
+
+/* Knappar och kort */
+.knapp {
+  display: inline-block; background: var(--falu); color: #fff;
+  padding: .7rem 1.2rem; border-radius: var(--radie);
+  text-decoration: none; font-weight: 600;
+}
+.knapp:hover { background: var(--falu-mork); color: #fff; }
+.knapp-rad { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: center; margin: 1.5rem 0 0; }
+.knapp.ljus { background: transparent; color: var(--falu); border: 2px solid var(--falu); }
+.knapp.ljus:hover { background: var(--falu); color: #fff; }
+
+.kort {
+  background: var(--kort); border: 1px solid var(--linje);
+  border-radius: var(--radie); padding: 1.1rem 1.25rem; margin: 0 0 1rem;
+}
+
+.genvagar { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); }
+.genvagar .kort { margin: 0; }
+.genvagar h3 { color: var(--falu); }
+.genvagar p:last-child { margin: 0; }
+
+/* Kalendern */
+.kalender { list-style: none; margin: 0; padding: 0; }
+.kalender li {
+  display: grid; grid-template-columns: 5.5rem 1fr; gap: 1rem;
+  padding: .9rem 0; border-bottom: 1px solid var(--linje);
+}
+.kalender li:first-child { border-top: 1px solid var(--linje); }
+.datum { font-family: var(--serif); color: var(--falu); line-height: 1.2; }
+.datum strong { display: block; font-size: 1.6rem; }
+.datum span { font-size: .9rem; text-transform: lowercase; }
+.kalender h3 { margin: 0 0 .15rem; }
+.kalender p { margin: 0; color: var(--dampad); }
+.kalender .datum { color: var(--falu); }
+
+.notis {
+  border-left: 4px solid var(--ek); background: #eef1e6;
+  padding: .75rem 1rem; border-radius: 0 var(--radie) var(--radie) 0; margin: 1rem 0;
+}
+.platshallare { background: #fff3cd; padding: 0 .3em; border-radius: 4px; }
+
+dl.fakta { display: grid; grid-template-columns: max-content 1fr; gap: .4rem 1.25rem; margin: 0; }
+dl.fakta dt { font-weight: 600; }
+dl.fakta dd { margin: 0; }
+
+ol.steg { padding-left: 1.3rem; }
+ol.steg li { margin-bottom: .6rem; }
+
+/* Sidfot */
+.sidfot { border-top: 1px solid var(--linje); color: var(--dampad); font-size: .9rem; padding: 1.5rem 0 2.5rem; }
+.sidfot p { margin: 0 0 .3rem; }
+
+@media (max-width: 30rem) {
+  h1 { font-size: 1.75rem; }
+  .kalender li { grid-template-columns: 4.25rem 1fr; gap: .75rem; }
+  dl.fakta { grid-template-columns: 1fr; }
+  dl.fakta dd { margin-bottom: .5rem; }
+}
+
+/* Utskrift: kalendern ska kunna bli ett månadsblad */
+@media print {
+  html { font-size: 12pt; }
+  body { background: #fff; }
+  .utkast, .meny, .knapp-rad, .hoppa, .genvagar { display: none; }
+  .sidhuvud, .sidfot { border: 0; }
+  a { color: inherit; text-decoration: none; }
+  .kalender li { break-inside: avoid; }
+}
+
+.visuellt-dold {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+.ingress.vanster { margin-left: 0; }
+.knapp-rad.vanster { justify-content: flex-start; }
