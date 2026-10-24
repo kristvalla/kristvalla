@@ -18,3 +18,13 @@ button:hover { background: var(--falu-mork); }
 .dold { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
 .notis { margin-top: 1.5rem; padding: .75rem 1rem; border-left: 4px solid var(--ek); background: #fff; }
 .platshallare { background: #fff3cd; padding: 0 .3em; border-radius: 4px; }
+.fakta { display: grid; grid-template-columns: max-content 1fr; gap: .25rem 1rem; }
+.fakta dt { font-weight: 700; }
+.fakta dd { margin: 0; }
+.varning { padding: .75rem 1rem; border-left: 4px solid var(--falu); background: #fbe9e7; font-weight: 700; }
+.beslut { margin: 1.5rem 0; padding: 1rem; background: #fff; border: 2px solid var(--linje); border-radius: 10px; }
+.beslut label { margin-top: 0; }
+button.ja { background: var(--ek); }
+button.ja:hover { background: #2c4020; }
+button.ja, button.nej { width: 100%; font-size: 1.15rem; padding: 1rem; }
+@media (max-width: 30rem) { .fakta { grid-template-columns: 1fr; } .fakta dd { margin-bottom: .5rem; } }

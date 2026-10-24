@@ -50,6 +50,12 @@ för hur den startas. Den är provad på en vanlig dator med påhittade uppgifte
 - en spärr mot att samma dag bekräftas två gånger,
 - ett skript som skriver in de bekräftade datumen i kalendern i `hyr.html`.
 
+Bokningsansvariga sköter förfrågningarna från e-posten, utan konto och lösenord. De får ett mejl
+om varje ny förfrågan, med det som behövs för att bedöma den och knapparna **Godkänn** och
+**Avböj**. Knappen öppnar en sida där valet bekräftas. Den som har frågat får då ett svar
+enligt föreningens mallar, och kalendern uppdateras. Har ingen svarat på tre dagar kommer en
+påminnelse.
+
 Skriptet ändrar bara filen. Ändringen publiceras sedan som vanligt. Om tjänsten ligger nere
 ändras ingenting, och sidan visar den senaste kalendern.
 

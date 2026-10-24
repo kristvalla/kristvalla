@@ -4,3 +4,7 @@ pocketbase_*.zip
 checksums.txt
 # Datamappen innehåller förfrågningar med personuppgifter och checkas aldrig in.
 pb_data/
+# Inställningar med adresser och lösenord.
+installningar.env
+# Mejl som testbrevlådan har tagit emot.
+verktyg/
