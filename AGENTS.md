@@ -77,8 +77,13 @@ Tekniken är **inte vald ännu**. Fram till dess gäller:
 
 - **Enkelt före smart.** Föreslå det som en ideell kraft kan förstå, underhålla och lämna över.
   Färre beroenden är bättre.
-- **Inga stora ramverk eller tjänster** utan att det är beslutat. Om du tror att något behövs:
-  beskriv alternativen, kostnaden och vem som måste sköta det, och låt föreningen bestämma.
+- **Inga stora ramverk eller tjänster tas i bruk** utan att det är beslutat. Om du tror att
+  något behövs: beskriv alternativen, kostnaden och vem som måste sköta det, och låt föreningen
+  bestämma.
+- **Försök är tillåtna.** Det går att bygga och prova en lösning innan den är beslutad, om
+  försöket är tydligt märkt som förslag, inte används på den publicerade sidan och bara
+  innehåller påhittade uppgifter. Beskriv försöket i `docs/beslut/`, så att föreningen kan ta
+  ställning till det. De hårda reglerna ovan gäller även för försök.
 - **Öppna format och ingen inlåsning.** Innehållet ska gå att flytta till en annan lösning.
 - **Det statiska och tjänsten hålls isär.** Den statiska sidan (information och kalender)
   får aldrig vara beroende av att tjänsten fungerar.
