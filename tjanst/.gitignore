@@ -1,0 +1,6 @@
+# Programfilen hämtas med hamta-pocketbase.sh och checkas inte in.
+pocketbase
+pocketbase_*.zip
+checksums.txt
+# Datamappen innehåller förfrågningar med personuppgifter och checkas aldrig in.
+pb_data/

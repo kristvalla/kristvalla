@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bokningsförfrågan (förslag) – Kristvalla Bygdegårdsförening</title>
+  <link rel="stylesheet" href="/stil.css">
+</head>
+<body>
+  <p class="forslag">FÖRSLAG. Provversion med påhittade uppgifter. Används inte på den riktiga sidan.</p>
+  <main>
+    <h1>Skicka en bokningsförfrågan</h1>
+    <p>Fyll i formuläret, så hör vi av oss via e-post. Dagen är inte bokad förrän du har fått
+      en bekräftelse från föreningen.</p>
+
+    <form method="post" action="/boka">
+      <label for="namn">Namn</label>
+      <input id="namn" name="namn" required maxlength="100" autocomplete="name">
+
+      <label for="epost">E-post</label>
+      <input id="epost" name="epost" type="email" required autocomplete="email">
+
+      <label for="datum">Önskat datum
+        <span class="hjalp">Skriv som ÅÅÅÅ-MM-DD om du inte får upp en kalender.</span></label>
+      <input id="datum" name="datum" type="date" required>
+
+      <label for="antal">Ungefär hur många blir ni?</label>
+      <input id="antal" name="antal" type="number" inputmode="numeric" min="1" max="1000" required>
+
+      <label for="syfte">Vad gäller det?
+        <span class="hjalp">Till exempel födelsedagsfest, minnesstund eller föreningsmöte.</span></label>
+      <textarea id="syfte" name="syfte" rows="3" maxlength="500" required></textarea>
+
+      <!-- Fältet syns inte för besökare. Det fångar automatiska skräpprogram. -->
+      <div class="dold" aria-hidden="true">
+        <label for="webbplats">Lämna tomt</label>
+        <input id="webbplats" name="webbplats" tabindex="-1" autocomplete="off">
+      </div>
+
+      <button type="submit">Skicka förfrågan</button>
+    </form>
+
+    <p class="notis">Vi använder dina uppgifter bara för att hantera bokningen. Bara föreningen
+      ser dem. De sparas <span class="platshallare">[hur länge, enligt föreningens beslut]</span>
+      och tas sedan bort. Kalendern på hemsidan visar bara att en dag är bokad, aldrig vem som
+      har bokat.</p>
+  </main>
+</body>
+</html>

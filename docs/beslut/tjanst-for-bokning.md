@@ -1,7 +1,7 @@
 # Tjänst för bokningar
 
-> **Status: förslag, 2026-10-24.** Inte beslutat av föreningen. Ingenting är byggt eller provat
-> ännu.
+> **Status: förslag, 2026-10-24.** Inte beslutat av föreningen. En provversion finns i
+> [tjanst/](../../tjanst/README.md). Den används inte på den publicerade sidan.
 
 ## Vad som ska lösas
 
@@ -38,6 +38,20 @@ aktiviteter i kalendariet. Det ingår inte i det här förslaget.
 | Tjänsten på laptopen | Sparar förfrågningar och bokningar | Förfrågningar tas emot via e-post tills vidare |
 
 Kalendern på den statiska sidan visar bara *att* en dag är bokad, aldrig vem som har bokat.
+
+## Provversion
+
+En provversion med PocketBase v0.40.6 finns i [tjanst/](../../tjanst/README.md), med anvisning
+för hur den startas. Den är provad på en vanlig dator med påhittade uppgifter. Den har:
+
+- ett formulär för bokningsförfrågan som fungerar utan JavaScript,
+- en tabell med förfrågningar som bara administratörer kan läsa,
+- en öppen lista med bara datumen för bekräftade bokningar, utan namn,
+- en spärr mot att samma dag bekräftas två gånger,
+- ett skript som skriver in de bekräftade datumen i kalendern i `hyr.html`.
+
+Skriptet ändrar bara filen. Ändringen publiceras sedan som vanligt. Om tjänsten ligger nere
+ändras ingenting, och sidan visar den senaste kalendern.
 
 ## Alternativ
 
