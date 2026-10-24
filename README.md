@@ -7,9 +7,9 @@ kunna hyra bygdegården och bli medlem, och få veta hur det är att bo här. Ak
 föreningar, skolan, kyrkan och företagen i bygden får gärna synas. Föreningen lägger in dem och
 ansvarar för innehållet.
 
-> **Status:** utkast. Se hur sidan kan bli på
-> **[kristvalla.github.io/kristvalla](https://kristvalla.github.io/kristvalla/)**.
-> Domänen är tänkt att bli kristvalla.se.
+> **Status:** ett första utkast är publicerat på
+> [kristvalla.github.io/kristvalla](https://kristvalla.github.io/kristvalla/). Uppgifter som pris
+> och avgift saknas ännu. Domänen är tänkt att bli kristvalla.se.
 
 ## Vad sidan ska göra
 
@@ -77,12 +77,10 @@ privatperson, och det ska finnas en säkerhetskopia på ett annat ställe.
 
 ## Titta på sidan
 
-Utkastet finns på **[kristvalla.github.io/kristvalla](https://kristvalla.github.io/kristvalla/)**.
-Det är en förhandsvisning via GitHub Pages och uppdateras när en ändring förs in i
-huvudgrenen (`main`). Det är inte sidans slutliga adress.
+Sidan finns på **https://kristvalla.github.io/kristvalla/**.
 
-Sidan är vanliga HTML-filer utan byggsteg. Du kan också öppna `index.html` i en webbläsare
-på din egen dator, så fungerar den direkt.
+Den består av vanliga HTML-filer utan byggsteg. Vill du titta på en ändring innan den
+publiceras: öppna `index.html` i en webbläsare, så fungerar den direkt.
 
 ```
 index.html     startsidan med kalendern
@@ -93,7 +91,22 @@ css/stil.css   gemensam stil, även för utskrift av kalendern
 bilder/        loggan och andra bilder
 ```
 
-Text inom gul markering är platshållare som ska bytas ut innan sidan publiceras.
+Text inom gul markering är platshållare som ska bytas ut. Den gröna raden överst på varje sida
+visar att sidan är ett utkast. Ta bort den när innehållet är klart.
+
+## Så publiceras sidan
+
+Sidan publiceras med GitHub Pages direkt från grenen `main`, från repots rot
+(*Settings → Pages → Deploy from a branch*). Det finns inget att bygga.
+
+1. Gör ändringen på en egen gren och öppna en *pull request*.
+2. Någon i föreningen läser igenom och godkänner. Föreningen ansvarar för innehållet.
+3. När ändringen slås ihop med `main` publiceras den automatiskt inom några minuter. Under
+   fliken *Actions* syns körningen *pages build and deployment*.
+
+**Egen domän:** när kristvalla.se tillhör föreningen läggs domänen in under *Settings → Pages →
+Custom domain*, och domänens DNS pekas mot GitHub Pages enligt GitHubs anvisning. Kryssa då i
+*Enforce HTTPS*.
 
 ## Repot
 
