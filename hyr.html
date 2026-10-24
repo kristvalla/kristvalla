@@ -44,6 +44,49 @@
     <h2>Pris</h2>
     <p><span class="platshallare">[Prislista enligt styrelsens beslut. Till exempel dag, helg och medlemspris.]</span></p>
 
+    <h2 id="lediga">Lediga och bokade datum</h2>
+    <p class="notis">Bokningarna nedan är exempel i utkastet.</p>
+    <!-- Så uppdaterar du kalendern:
+         - En dag som blir bokad: ändra <td>7</td> till
+           <td class="bokad">7<span class="visuellt-dold"> bokad</span></td>
+         - En bokning som ställs in: ändra tillbaka till <td>7</td>.
+         - Ny månad: kopiera en hel <table> och ändra rubriken och datumen.
+           Ta bort månader som har passerat.
+         - Ändra datumet för senaste uppdateringen.
+         Visa bara att dagen är bokad, aldrig vem som har bokat. -->
+    <p class="teckenforklaring" aria-hidden="true">
+      <span><span class="ruta"></span> Ledig</span>
+      <span><span class="ruta bokad"></span> Bokad</span>
+    </p>
+    <div class="manader">
+      <table class="belaggning">
+        <caption>November 2026</caption>
+        <thead><tr><th scope="col" abbr="måndag">mån</th><th scope="col" abbr="tisdag">tis</th><th scope="col" abbr="onsdag">ons</th><th scope="col" abbr="torsdag">tor</th><th scope="col" abbr="fredag">fre</th><th scope="col" abbr="lördag">lör</th><th scope="col" abbr="söndag">sön</th></tr></thead>
+        <tbody>
+          <tr><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
+          <tr><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td class="bokad">7<span class="visuellt-dold"> bokad</span></td><td>8</td></tr>
+          <tr><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td class="bokad">14<span class="visuellt-dold"> bokad</span></td><td>15</td></tr>
+          <tr><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td class="bokad">21<span class="visuellt-dold"> bokad</span></td><td>22</td></tr>
+          <tr><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td class="bokad">28<span class="visuellt-dold"> bokad</span></td><td>29</td></tr>
+          <tr><td>30</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+      <table class="belaggning">
+        <caption>December 2026</caption>
+        <thead><tr><th scope="col" abbr="måndag">mån</th><th scope="col" abbr="tisdag">tis</th><th scope="col" abbr="onsdag">ons</th><th scope="col" abbr="torsdag">tor</th><th scope="col" abbr="fredag">fre</th><th scope="col" abbr="lördag">lör</th><th scope="col" abbr="söndag">sön</th></tr></thead>
+        <tbody>
+          <tr><td></td><td>1</td><td>2</td><td>3</td><td>4</td><td class="bokad">5<span class="visuellt-dold"> bokad</span></td><td>6</td></tr>
+          <tr><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td class="bokad">12<span class="visuellt-dold"> bokad</span></td><td>13</td></tr>
+          <tr><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td class="bokad">19<span class="visuellt-dold"> bokad</span></td><td>20</td></tr>
+          <tr><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td></tr>
+          <tr><td>28</td><td>29</td><td>30</td><td class="bokad">31<span class="visuellt-dold"> bokad</span></td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Kalendern uppdateras av föreningen när en bokning är bekräftad. Senast uppdaterad:
+      <span class="platshallare">[datum]</span>. En ledig dag kan ha hunnit bokas, så skicka
+      gärna en förfrågan även om dagen ser ledig ut.</p>
+
     <h2>Så bokar du</h2>
     <ol class="steg">
       <li><strong>Mejla oss</strong> vilket datum du önskar, ungefär hur många ni blir och vad
