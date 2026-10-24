@@ -7,7 +7,9 @@ kunna hyra bygdegården och bli medlem, och få veta hur det är att bo här. Ak
 föreningar, skolan, kyrkan och företagen i bygden får gärna synas. Föreningen lägger in dem och
 ansvarar för innehållet.
 
-> **Status:** planering. Inget är byggt ännu. Domänen är tänkt att bli kristvalla.se.
+> **Status:** utkast. Se hur sidan kan bli på
+> **[kristvalla.github.io/kristvalla](https://kristvalla.github.io/kristvalla/)**.
+> Domänen är tänkt att bli kristvalla.se.
 
 ## Vad sidan ska göra
 
@@ -75,8 +77,12 @@ privatperson, och det ska finnas en säkerhetskopia på ett annat ställe.
 
 ## Titta på sidan
 
-Sidan är vanliga HTML-filer utan byggsteg. Öppna `index.html` i en webbläsare, så fungerar
-den direkt.
+Utkastet finns på **[kristvalla.github.io/kristvalla](https://kristvalla.github.io/kristvalla/)**.
+Det är en förhandsvisning via GitHub Pages och uppdateras när en ändring förs in i
+huvudgrenen (`main`). Det är inte sidans slutliga adress.
+
+Sidan är vanliga HTML-filer utan byggsteg. Du kan också öppna `index.html` i en webbläsare
+på din egen dator, så fungerar den direkt.
 
 ```
 index.html     startsidan med kalendern
