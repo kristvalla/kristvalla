@@ -1,0 +1,5 @@
+# Inställningar för publiceringen med GitHub Pages.
+# Mappen tjanst/ är en provversion av bokningstjänsten (förslag). Den ska inte
+# publiceras på hemsidan, se docs/beslut/tjanst-for-bokning.md.
+exclude:
+  - tjanst/
