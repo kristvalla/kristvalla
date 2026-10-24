@@ -78,6 +78,38 @@ Skriptet visar månaderna från och med den här månaden och sätter datumet f�
 uppdaterad*. Om tjänsten inte svarar ändras ingenting. Under provperioden: kör skriptet mot en
 kopia, så att de påhittade bokningarna inte hamnar på den riktiga sidan.
 
+## PocketBase flyttar från GitHub
+
+Utvecklaren har meddelat att PocketBase flyttar från GitHub till en egen plattform på
+`ganigeorgiev.com/pocketbase/pocketbase`
+([meddelandet](https://github.com/pocketbase/pocketbase/discussions/7841), 2026-09-12, läst
+2026-10-24).
+
+**Läget 2026-10-24:** flytten har inte skett än. v0.40.6, som provversionen använder, finns på
+GitHub och ligger kvar där. `hamta-pocketbase.sh` fungerar alltså även efter flytten.
+
+Det här ändras:
+
+- **Nya versioner** finns bara på den nya plattformen. Ingen kopia läggs på GitHub.
+- **Bevakningen flyttas inte.** Den som sköter tjänsten behöver följa PocketBase på den nya
+  plattformen för att få veta om säkerhetsluckor.
+
+Så ser du om flytten har skett:
+
+```sh
+gh api repos/pocketbase/pocketbase -q .archived   # true = flyttat
+```
+
+När föreningen går upp till en nyare version: byt `VERSION` och adressen `BAS` i
+`hamta-pocketbase.sh`. Kontrollera att kontrollsummorna (`checksums.txt`) finns på samma
+ställe och i samma form, annars behöver skriptet ändras.
+
+| Vad | Adress |
+|---|---|
+| Projektsida | `https://ganigeorgiev.com/pocketbase/pocketbase` ⚠️ verifiera |
+| Nedladdning av en version | ⚠️ [adressformat, när utvecklaren har publicerat det] |
+| Kontrollsummor | ⚠️ [adress] |
+
 ## Börja om
 
 Stoppa tjänsten och ta bort mappen `pb_data/`. Nästa gång tjänsten startar skapas tabellerna på

@@ -14,6 +14,7 @@ case "$(uname -m)" in
 esac
 
 FIL="pocketbase_${VERSION}_linux_${ARK}.zip"
+# Nya versioner finns bara på den nya plattformen efter flytten, se README.
 BAS="https://github.com/pocketbase/pocketbase/releases/download/v${VERSION}"
 
 curl -fsSLO "$BAS/$FIL"
