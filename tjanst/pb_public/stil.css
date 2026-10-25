@@ -31,3 +31,6 @@ button.ja, button.nej { width: 100%; font-size: 1.15rem; padding: 1rem; }
 .inbaddad .forslag { padding: .3rem .75rem; font-size: .85rem; }
 .inbaddad main { padding-top: .25rem; }
 .inbaddad h1 { margin-top: .5rem; font-size: 1.5rem; }
+.kryss { display: flex; gap: .75rem; align-items: flex-start; margin-top: 1.25rem; }
+.kryss input { width: 1.6rem; height: 1.6rem; flex: none; margin: .15rem 0 0; accent-color: var(--ek); }
+.kryss label { margin-top: 0; font-weight: 400; }

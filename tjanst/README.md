@@ -62,6 +62,10 @@ besluta om förfrågan. Därför ska mejlen bara gå till bokningsansvariga.
 
 Administrationssidan behövs bara för det ovanliga, till exempel att ändra ett beslut som blev fel.
 
+Den som frågar måste kryssa i att hen har läst [hyresavtalet](../hyresavtal.html). Förfrågan
+sparar vilken version av avtalet som godkändes (`avtal.version` i `pb_hooks/mallar.js`, samma
+datum som i avtalet). Ändras avtalet: byt datumet på båda ställena.
+
 Vem ser vad:
 
 | Tabell | Innehåll | Vem kan läsa |

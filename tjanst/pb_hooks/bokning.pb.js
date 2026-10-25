@@ -107,6 +107,9 @@ routerAdd("POST", "/boka", (e) => {
   if (!namn || !epost || !datum || !syfte || !(antal > 0)) {
     return fel("Fyll i alla fält.")
   }
+  if (e.request.formValue("avtal") !== "ja") {
+    return fel("Du behöver läsa hyresavtalet och kryssa i att du godkänner det.")
+  }
 
   // Kontrollera att datumet finns och inte har passerat.
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(datum)
@@ -131,6 +134,7 @@ routerAdd("POST", "/boka", (e) => {
   record.set("antal", antal)
   record.set("syfte", syfte)
   record.set("status", "ny")
+  record.set("avtal", require(`${__hooks}/mallar.js`).avtal.version)
 
   try {
     $app.save(record)

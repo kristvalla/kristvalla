@@ -16,6 +16,7 @@ function inst() {
     svarsadress: env("BOKNING_SVARSADRESS", "kristvalla@proton.me"),
     amnesprefix: env("BOKNING_AMNESPREFIX", "[PROV] "),
     paminnDagar: parseInt(env("BOKNING_PAMINN_DAGAR", "3"), 10),
+    hemsida: env("BOKNING_HEMSIDA", "").replace(/\/+$/, ""),
     kalenderfil: env("BOKNING_KALENDERFIL", `${$app.dataDir()}/forhandsvisning/hyr.html`),
   }
 }
@@ -105,6 +106,7 @@ function mejlTillAnsvariga(rec, rubrik) {
     ["E-post", rec.getString("epost")],
     ["Antal personer", rec.getString("antal")],
     ["Vad det gäller", rec.getString("syfte")],
+    ["Hyresavtal", rec.getString("avtal") ? `Godkänt, version ${rec.getString("avtal")}` : "Inte godkänt"],
   ]
   const text = `${rubrik}
 
@@ -146,7 +148,7 @@ function mejlTillHyresgast(rec, mallnamn) {
   return skicka({
     till: [rec.getString("epost")],
     amne: fyll(mall.amne, rec, ""),
-    text: fyll(mall.text, rec, rec.getString("meddelande")),
+    text: fyll(mall.text, rec, rec.getString("meddelande")).replaceAll("{avtal}", avtalLank()),
     svarTill: inst().svarsadress,
   })
 }
@@ -158,16 +160,16 @@ function mejlTillHyresgast(rec, mallnamn) {
 function uppdateraKalender() {
   const fil = inst().kalenderfil
   try {
-    try {
-      $os.stat(fil)
-    } catch (_) {
-      const html = toString($os.readFile(`${__hooks}/../../hyr.html`))
-        .replace(/href="mailto:[^"]*subject=Bokningsf[^"]*"/, `href="${inst().adress}/"`)
-      $os.mkdirAll(fil.replace(/\/[^/]*$/, ""), 0o755)
-      $os.writeFile(fil, html, 0o644)
-    }
+    // Kopieras på nytt varje gång, så att ändringar i hyr.html kommer med.
+    const html = toString($os.readFile(`${__hooks}/../../hyr.html`))
+      .replace(/href="mailto:[^"]*subject=Bokningsf[^"]*"/, `href="${inst().adress}/"`)
+    // Byggs i en tillfällig fil, så att hemsidan aldrig visar en halvfärdig sida.
+    const ny = fil + ".ny"
+    $os.mkdirAll(fil.replace(/\/[^/]*$/, ""), 0o755)
+    $os.writeFile(ny, html, 0o644)
     $os.cmd("python3", `${__hooks}/../uppdatera_kalender.py`,
-      "--tjanst", inst().lokal, "--fil", fil, "--boka-adress", inst().adress).output()
+      "--tjanst", inst().lokal, "--fil", ny, "--boka-adress", inst().adress).output()
+    $os.rename(ny, fil)
   } catch (err) {
     $app.logger().error("Kunde inte uppdatera kalendern", "fel", String(err))
   }
@@ -229,6 +231,12 @@ function formular(datum, inbaddad) {
         <span class="hjalp">Till exempel födelsedagsfest, minnesstund eller föreningsmöte.</span></label>
       <textarea id="syfte" name="syfte" rows="3" maxlength="500" required></textarea>
 
+      <div class="kryss">
+        <input id="avtal" name="avtal" type="checkbox" value="ja" required>
+        <label for="avtal">Jag har läst <a href="${esc(avtalLank())}" target="_blank" rel="noopener">hyresavtalet</a>
+          och godkänner det.<span class="hjalp">Avtalet öppnas i en ny flik.</span></label>
+      </div>
+
       <!-- Fältet syns inte för besökare. Det fångar automatiska skräpprogram. -->
       <div class="dold" aria-hidden="true">
         <label for="webbplats">Lämna tomt</label>
@@ -244,6 +252,12 @@ function formular(datum, inbaddad) {
       har bokat.</p>`, inbaddad)
 }
 
+// Adressen till hyresavtalet på hemsidan.
+function avtalLank() {
+  const mallar = require(`${__hooks}/mallar.js`)
+  return inst().hemsida + mallar.avtal.sokvag
+}
+
 // Formuläret får visas inuti hemsidans kalender, men bara från hemsidans adress
 // (BOKNING_HEMSIDA). Alla andra sidor får inte bäddas in någonstans.
 function tillatInbaddning(e) {
@@ -255,5 +269,5 @@ function tillatInbaddning(e) {
 
 module.exports = {
   inst, esc, datumText, nu, lank, lage, skicka,
-  mejlTillAnsvariga, mejlTillHyresgast, uppdateraKalender, sida, formular, tillatInbaddning,
+  mejlTillAnsvariga, mejlTillHyresgast, uppdateraKalender, sida, formular, tillatInbaddning, avtalLank,
 }
