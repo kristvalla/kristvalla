@@ -9,8 +9,8 @@ Visar hemsidans statiska filer, precis som de ligger i repot, med två skillnade
   ändras aldrig.
 - Överst på varje sida står att det är en testversion.
 
-Bara hemsidans egna filer visas: html-filerna i repots rot och mapparna css/
-och bilder/. Allt annat, till exempel tjanst/ med databasen och
+Bara hemsidans egna filer visas: html-filerna i repots rot och mapparna css/,
+bilder/ och js/. Allt annat, till exempel tjanst/ med databasen och
 inställningarna, går inte att nå.
 
     python3 hemsida_prov.py                  # http://127.0.0.1:8096/
@@ -31,7 +31,7 @@ TJANST = Path(__file__).resolve().parent
 REPO = TJANST.parent
 FORHANDSVISNING = Path(os.environ.get("BOKNING_KALENDERFIL") or
                        Path(os.environ.get("BOKNING_DATA") or TJANST / "pb_data") / "forhandsvisning" / "hyr.html")
-TILLATNA_MAPPAR = ("css", "bilder")
+TILLATNA_MAPPAR = ("css", "bilder", "js")
 
 TESTRAD = ('<p style="margin:0;padding:.6rem 1rem;background:#fff3cd;border-bottom:2px solid #b58900;'
            'font-weight:700;text-align:center">TESTVERSION av hemsidan. Bokningarna är påhittade.</p>')

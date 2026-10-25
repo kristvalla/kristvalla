@@ -10,6 +10,10 @@ Exempel:
     python3 uppdatera_kalender.py
     python3 uppdatera_kalender.py --manader 4 --tjanst http://127.0.0.1:8097
     python3 uppdatera_kalender.py --fil /tmp/hyr-prov.html
+    python3 uppdatera_kalender.py --boka-adress https://boka.example.se
+
+Med --boka-adress blir lediga dagar från och med i dag länkar till formuläret,
+med datumet ifyllt. Utan den visar kalendern bara lediga och bokade dagar.
 
 Skriptet behöver bara Python 3, inga tillägg.
 """
@@ -54,8 +58,11 @@ def hamta_bokade(tjanst, fran):
         sida += 1
 
 
-def manadstabell(ar, manad, bokade):
-    """Bygger en <table> i samma form som i hyr.html."""
+def manadstabell(ar, manad, bokade, idag=None, boka_adress=None):
+    """Bygger en <table> i samma form som i hyr.html.
+
+    Med boka_adress blir lediga dagar från och med idag länkar till formuläret.
+    """
     huvud = "".join(f'<th scope="col" abbr="{lang}">{kort}</th>' for kort, lang in VECKODAGAR)
     rader = []
     for vecka in calendar.Calendar(firstweekday=0).monthdayscalendar(ar, manad):
@@ -65,6 +72,10 @@ def manadstabell(ar, manad, bokade):
                 celler.append("<td></td>")
             elif f"{ar:04d}-{manad:02d}-{dag:02d}" in bokade:
                 celler.append(f'<td class="bokad">{dag}<span class="visuellt-dold"> bokad</span></td>')
+            elif boka_adress and datetime.date(ar, manad, dag) >= idag:
+                datum = f"{ar:04d}-{manad:02d}-{dag:02d}"
+                celler.append(f'<td><a class="boka-dag" href="{boka_adress}/?datum={datum}">{dag}'
+                              f'<span class="visuellt-dold"> {MANADER[manad - 1]}, ledig, skicka förfrågan</span></a></td>')
             else:
                 celler.append(f"<td>{dag}</td>")
         rader.append(f"          <tr>{''.join(celler)}</tr>")
@@ -92,6 +103,8 @@ def main():
                       help="adressen till bokningstjänsten (standard: %(default)s)")
     tolk.add_argument("--fil", type=Path, default=STANDARDFIL,
                       help="filen som ska uppdateras (standard: hyr.html i repot)")
+    tolk.add_argument("--boka-adress",
+                      help="formulärets adress; då blir lediga dagar länkar till formuläret")
     tolk.add_argument("--manader", type=int, default=3,
                       help="hur många månader som visas, från och med denna (standard: %(default)s)")
     args = tolk.parse_args()
@@ -108,7 +121,8 @@ def main():
 
     html = args.fil.read_text(encoding="utf-8")
 
-    tabeller = "\n".join(manadstabell(ar, manad, bokade) for ar, manad in manader)
+    boka_adress = args.boka_adress.rstrip("/") if args.boka_adress else None
+    tabeller = "\n".join(manadstabell(ar, manad, bokade, idag, boka_adress) for ar, manad in manader)
     html, antal = re.subn(r'(<div class="manader">\n).*?(\n    </div>)',
                           lambda m: m.group(1) + tabeller + m.group(2), html, count=1, flags=re.S)
     if antal != 1:

@@ -167,13 +167,13 @@ function uppdateraKalender() {
       $os.writeFile(fil, html, 0o644)
     }
     $os.cmd("python3", `${__hooks}/../uppdatera_kalender.py`,
-      "--tjanst", inst().lokal, "--fil", fil).output()
+      "--tjanst", inst().lokal, "--fil", fil, "--boka-adress", inst().adress).output()
   } catch (err) {
     $app.logger().error("Kunde inte uppdatera kalendern", "fel", String(err))
   }
 }
 
-function sida(rubrik, innehall) {
+function sida(rubrik, innehall, inbaddad) {
   return `<!doctype html>
 <html lang="sv">
 <head>
@@ -183,7 +183,7 @@ function sida(rubrik, innehall) {
   <title>${esc(rubrik)} – Kristvalla Bygdegårdsförening</title>
   <link rel="stylesheet" href="/stil.css">
 </head>
-<body>
+<body${inbaddad ? ' class="inbaddad"' : ""}>
   <p class="forslag">FÖRSLAG. Provversion med påhittade uppgifter. Används inte på den riktiga sidan.</p>
   <main>
     <h1>${esc(rubrik)}</h1>
@@ -193,7 +193,67 @@ function sida(rubrik, innehall) {
 </html>`
 }
 
+// Formuläret för bokningsförfrågan. datum (ÅÅÅÅ-MM-DD) fylls i om det finns,
+// till exempel när man har klickat på en dag i kalendern på hemsidan.
+function formular(datum, inbaddad) {
+  const giltigt = /^\d{4}-\d{2}-\d{2}$/.test(datum || "") ? datum : ""
+  let lageText = ""
+  if (giltigt) {
+    const bokad = $app.countRecords("forfragningar",
+      $dbx.hashExp({ datum: giltigt, status: "bekräftad" })) > 0
+    lageText = bokad
+      ? `<p class="varning">${esc(datumText(giltigt))} är redan bokat. Välj gärna ett annat datum.</p>`
+      : `<p class="notis">Du frågar om <strong>${esc(datumText(giltigt))}</strong>.</p>`
+  }
+  return sida("Skicka en bokningsförfrågan", `
+    ${lageText}
+    <p>Fyll i formuläret, så hör vi av oss via e-post. Dagen är inte bokad förrän du har fått
+      en bekräftelse från föreningen. Hyran betalas i förskott via Swish.</p>
+
+    <form method="post" action="/boka">
+      ${inbaddad ? '<input type="hidden" name="inbaddad" value="1">' : ""}
+      <label for="datum">Datum
+        <span class="hjalp">Skriv som ÅÅÅÅ-MM-DD om du inte får upp en kalender.</span></label>
+      <input id="datum" name="datum" type="date" required value="${esc(giltigt)}">
+
+      <label for="namn">Namn</label>
+      <input id="namn" name="namn" required maxlength="100" autocomplete="name">
+
+      <label for="epost">E-post</label>
+      <input id="epost" name="epost" type="email" required autocomplete="email">
+
+      <label for="antal">Ungefär hur många blir ni?</label>
+      <input id="antal" name="antal" type="number" inputmode="numeric" min="1" max="1000" required>
+
+      <label for="syfte">Vad gäller det?
+        <span class="hjalp">Till exempel födelsedagsfest, minnesstund eller föreningsmöte.</span></label>
+      <textarea id="syfte" name="syfte" rows="3" maxlength="500" required></textarea>
+
+      <!-- Fältet syns inte för besökare. Det fångar automatiska skräpprogram. -->
+      <div class="dold" aria-hidden="true">
+        <label for="webbplats">Lämna tomt</label>
+        <input id="webbplats" name="webbplats" tabindex="-1" autocomplete="off">
+      </div>
+
+      <button type="submit">Skicka förfrågan</button>
+    </form>
+
+    <p class="notis">Vi använder dina uppgifter bara för att hantera bokningen. Bara föreningen
+      ser dem. De sparas <span class="platshallare">[hur länge, enligt föreningens beslut]</span>
+      och tas sedan bort. Kalendern på hemsidan visar bara att en dag är bokad, aldrig vem som
+      har bokat.</p>`, inbaddad)
+}
+
+// Formuläret får visas inuti hemsidans kalender, men bara från hemsidans adress
+// (BOKNING_HEMSIDA). Alla andra sidor får inte bäddas in någonstans.
+function tillatInbaddning(e) {
+  const hemsida = $os.getenv("BOKNING_HEMSIDA")
+  if (!hemsida) return
+  e.response.header().del("X-Frame-Options")
+  e.response.header().set("Content-Security-Policy", `frame-ancestors 'self' ${hemsida}`)
+}
+
 module.exports = {
   inst, esc, datumText, nu, lank, lage, skicka,
-  mejlTillAnsvariga, mejlTillHyresgast, uppdateraKalender, sida,
+  mejlTillAnsvariga, mejlTillHyresgast, uppdateraKalender, sida, formular, tillatInbaddning,
 }

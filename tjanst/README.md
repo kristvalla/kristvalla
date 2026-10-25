@@ -17,7 +17,7 @@ pb_migrations/             skapar tabellerna och reglerna för vem som får se v
 pb_hooks/bokning.pb.js     formuläret, mejlen, beslutssidan och påminnelserna
 pb_hooks/mallar.js         texterna i mejlen, som föreningen ändrar själv
 pb_hooks/stod.js           hjälpfunktioner
-pb_public/                 formuläret för bokningsförfrågan (provversion)
+pb_public/                 stil för formuläret och svarssidorna
 uppdatera_kalender.py      skriver in bekräftade datum i kalendern i hyr.html
 epost_prov.py              testbrevlåda som sparar mejlen som filer i stället för att skicka dem
 hemsida_prov.py            testversion av hemsidan, med kalendern från provet
@@ -38,7 +38,9 @@ om projektmappen säkerhetskopieras till en molntjänst. Se *Köra som tjänster
 Bokningsansvariga behöver bara e-posten. De behöver inget konto, inget lösenord och ingen
 administrationssida.
 
-1. **Förfrågan.** Den som vill hyra fyller i formuläret: namn, e-post, datum, ungefärligt antal
+1. **Förfrågan.** Den som vill hyra trycker på en ledig dag i kalendern på *Hyr bygdegården*.
+   Formuläret öppnas i en ruta ovanpå kalendern, med datumet ifyllt. Utan JavaScript är dagen en
+   vanlig länk till formuläret. Där fyller man i namn, e-post, datum, ungefärligt antal
    personer och vad det gäller. Förfrågan sparas med status **ny**, och den som frågat får ett
    mejl om att den har kommit fram.
 2. **Notis.** Bokningsansvariga får ett mejl med allt som behövs för att bedöma förfrågan: om
@@ -119,6 +121,7 @@ viktigaste:
 | `BOKNING_MOTTAGARE` | Vilka som får mejl om nya förfrågningar. Minst två, så att någon kan ta över |
 | `BOKNING_HTTP` | Var tjänsten lyssnar. `127.0.0.1:8097` betyder bara den egna datorn |
 | `BOKNING_ADRESS` | Adressen i länkarna i mejlen, så som bokningsansvariga når tjänsten |
+| `BOKNING_HEMSIDA` | Hemsidans adress. Bara där får formuläret visas i en ruta ovanpå kalendern |
 | `SMTP_…` | Kontot som mejlen skickas från. Under provet: testbrevlådan |
 
 Startas tjänsten utan `installningar.env` lyssnar den bara på den egna datorn och skickar inga

@@ -142,6 +142,25 @@ main { padding-bottom: 3rem; }
   border: 1px solid var(--linje); background: var(--kort); border-radius: 3px;
 }
 .ruta.bokad { border-color: var(--falu); background: var(--falu); }
+/* Lediga dagar kan vara länkar till bokningsformuläret. Hela rutan går att klicka på. */
+.belaggning td:has(> a.boka-dag) { padding: 0; }
+.belaggning a.boka-dag {
+  display: block; padding: .45rem 0; color: var(--ek); font-weight: 700;
+  text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px;
+}
+.boka-tips { font-weight: 600; }
+.belaggning a.boka-dag:hover, .belaggning a.boka-dag:focus-visible {
+  background: var(--ek); color: #fff; outline-offset: -3px;
+}
+
+/* Rutan med bokningsformuläret, när JavaScript finns (js/kalender.js) */
+.boka-ruta {
+  width: min(40rem, 100vw - 1rem); height: min(52rem, 100dvh - 1rem); max-width: none; max-height: none;
+  padding: 0; border: 0; border-radius: var(--radie); box-shadow: 0 .5rem 2rem rgb(0 0 0 / .35);
+}
+.boka-ruta::backdrop { background: rgb(0 0 0 / .45); }
+.boka-ruta form { display: flex; justify-content: flex-end; margin: 0; padding: .4rem; background: var(--papper); }
+.boka-ruta iframe { display: block; width: 100%; height: calc(100% - 3.2rem); border: 0; }
 
 .notis {
   border-left: 4px solid var(--ek); background: #eef1e6;

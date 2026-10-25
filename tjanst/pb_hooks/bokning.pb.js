@@ -74,12 +74,24 @@ onRecordAfterDeleteSuccess((e) => {
   }
 }, "forfragningar")
 
+// Formuläret. ?datum=ÅÅÅÅ-MM-DD fyller i datumet, ?inbaddad=1 när det visas i
+// en ruta ovanpå kalendern på hemsidan.
+routerAdd("GET", "/{$}", (e) => {
+  const stod = require(`${__hooks}/stod.js`)
+  const q = e.request.url.query()
+  stod.tillatInbaddning(e)
+  return e.html(200, stod.formular(q.get("datum"), q.get("inbaddad") === "1"))
+})
+
 routerAdd("POST", "/boka", (e) => {
   const stod = require(`${__hooks}/stod.js`)
+  const inbaddad = e.request.formValue("inbaddad") === "1"
+  stod.tillatInbaddning(e)
+  const tillbaka = `<p><a href="/${inbaddad ? "?inbaddad=1" : ""}">Tillbaka till formuläret</a></p>`
   const fel = (text) => e.html(400, stod.sida("Förfrågan skickades inte",
-    `<p>${stod.esc(text)}</p><p><a href="/">Tillbaka till formuläret</a></p>`))
+    `<p>${stod.esc(text)}</p>${tillbaka}`, inbaddad))
   const tack = (text) => e.html(200, stod.sida("Tack!",
-    `<p>${stod.esc(text)}</p><p><a href="/">Tillbaka till formuläret</a></p>`))
+    `<p>${stod.esc(text)}</p>${tillbaka}`, inbaddad))
 
   // Dolt fält som bara automatiska skräpprogram fyller i.
   if (e.request.formValue("webbplats") !== "") {

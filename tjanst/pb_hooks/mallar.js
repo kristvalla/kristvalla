@@ -35,7 +35,7 @@ Kristvalla Bygdegårdsförening`,
 Vi bekräftar din bokning av Kristvalla bygdegård {datum}.
 
 Pris: [enligt föreningens prislista]
-Betalning: [hur och när man betalar]
+Betalning: Swisha hyran i förskott till [föreningens Swish-nummer], senast [antal] dagar efter den här bekräftelsen. Skriv datumet för bokningen i meddelandet. Bokningen gäller när betalningen har kommit in.
 Nyckel: [hur man får nyckeln och lämnar tillbaka den]
 {meddelande}
 Välkommen!
