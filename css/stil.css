@@ -142,6 +142,16 @@ main { padding-bottom: 3rem; }
   border: 1px solid var(--linje); background: var(--kort); border-radius: 3px;
 }
 .ruta.bokad { border-color: var(--falu); background: var(--falu); }
+/* Delvis bokad: några pass är bokade, andra lediga */
+.belaggning td.delvis, .ruta.delvis { background: linear-gradient(to bottom right, var(--kort) 50%, #ecc8c4 50%); }
+.ruta.delvis { border-color: var(--falu); }
+
+/* Prislistan */
+.tabell { overflow-x: auto; }
+.prislista { width: 100%; border-collapse: collapse; }
+.prislista th, .prislista td { text-align: left; padding: .5rem .6rem .5rem 0; border-bottom: 1px solid var(--linje); vertical-align: top; }
+.prislista thead th { font-size: .85rem; color: var(--dampad); }
+.prislista tbody th { font-weight: 600; }
 /* Lediga dagar kan vara länkar till bokningsformuläret. Hela rutan går att klicka på. */
 .belaggning td:has(> a.boka-dag) { padding: 0; }
 .belaggning a.boka-dag {
@@ -196,6 +206,7 @@ ol.steg li { margin-bottom: .6rem; }
   .kalender li, .belaggning { break-inside: avoid; }
   /* Bakgrundsfärg skrivs inte alltid ut, så bokade dagar stryks också över */
   .bokad { print-color-adjust: exact; -webkit-print-color-adjust: exact; text-decoration: line-through; }
+  .delvis { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
 }
 
 .visuellt-dold {
