@@ -1,0 +1,30 @@
+/* Stil för provversionen av bokningstjänsten. Samma färger som hemsidan (css/stil.css). */
+:root { --papper: #faf8ec; --text: #24221f; --falu: #781f19; --falu-mork: #5a1712; --ek: #3f5a2c; --linje: #d9d3c2; }
+* { box-sizing: border-box; }
+html { font-size: 112.5%; }
+body { margin: 0; background: var(--papper); color: var(--text); line-height: 1.6;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+main { max-width: 36rem; margin: 0 auto; padding: 1rem; }
+a { color: var(--falu); }
+.forslag { margin: 0; padding: .6rem 1rem; background: #fff3cd; border-bottom: 2px solid #b58900;
+  font-weight: 700; text-align: center; }
+label { display: block; margin-top: 1rem; font-weight: 700; }
+input, textarea { width: 100%; font: inherit; padding: .5rem; border: 2px solid var(--linje); border-radius: 6px; background: #fff; }
+input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 3px solid var(--ek); outline-offset: 2px; }
+.hjalp { display: block; font-weight: 400; font-size: .9rem; color: #5b564e; }
+button { margin-top: 1.5rem; font: inherit; font-weight: 700; padding: .7rem 1.4rem; border: 0;
+  border-radius: 8px; background: var(--falu); color: #fff; cursor: pointer; }
+button:hover { background: var(--falu-mork); }
+.dold { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.notis { margin-top: 1.5rem; padding: .75rem 1rem; border-left: 4px solid var(--ek); background: #fff; }
+.platshallare { background: #fff3cd; padding: 0 .3em; border-radius: 4px; }
+.fakta { display: grid; grid-template-columns: max-content 1fr; gap: .25rem 1rem; }
+.fakta dt { font-weight: 700; }
+.fakta dd { margin: 0; }
+.varning { padding: .75rem 1rem; border-left: 4px solid var(--falu); background: #fbe9e7; font-weight: 700; }
+.beslut { margin: 1.5rem 0; padding: 1rem; background: #fff; border: 2px solid var(--linje); border-radius: 10px; }
+.beslut label { margin-top: 0; }
+button.ja { background: var(--ek); }
+button.ja:hover { background: #2c4020; }
+button.ja, button.nej { width: 100%; font-size: 1.15rem; padding: 1rem; }
+@media (max-width: 30rem) { .fakta { grid-template-columns: 1fr; } .fakta dd { margin-bottom: .5rem; } }
