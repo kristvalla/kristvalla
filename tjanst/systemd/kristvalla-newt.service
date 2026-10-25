@@ -10,6 +10,8 @@ ExecStart=%h/Projects/kristvalla/tjanst/newt
 Restart=always
 RestartSec=5
 UMask=0077
+StandardOutput=append:%h/.local/share/kristvalla/newt.log
+StandardError=append:%h/.local/share/kristvalla/newt.log
 
 [Install]
 WantedBy=default.target
