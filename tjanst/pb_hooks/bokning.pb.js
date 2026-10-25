@@ -257,12 +257,6 @@ routerAdd("POST", "/beslut/{id}", (e) => {
   return svar(200, "Klart", text)
 })
 
-// Förhandsvisning av kalendern under provet: pb_data/forhandsvisning/hyr.html,
-// med hemsidans stil och bilder. Den riktiga hyr.html ändras inte.
-routerAdd("GET", "/forhandsvisning/css/{path...}", $apis.static(`${__hooks}/../../css`, false))
-routerAdd("GET", "/forhandsvisning/bilder/{path...}", $apis.static(`${__hooks}/../../bilder`, false))
-routerAdd("GET", "/forhandsvisning/{path...}", $apis.static(`${__hooks}/../pb_data/forhandsvisning`, false))
-
 // Påminnelse till bokningsansvariga om förfrågningar som ingen har svarat på.
 cronAdd("bokning_paminnelse", $os.getenv("BOKNING_PAMINN_SCHEMA") || "0 8 * * *", () => {
   const stod = require(`${__hooks}/stod.js`)
@@ -278,4 +272,9 @@ cronAdd("bokning_paminnelse", $os.getenv("BOKNING_PAMINN_SCHEMA") || "0 8 * * *"
       $app.save(rec)
     }
   }
+})
+
+// Kalendern uppdateras också varje timme, så att den följer med när en ny månad börjar.
+cronAdd("bokning_kalender", "0 * * * *", () => {
+  require(`${__hooks}/stod.js`).uppdateraKalender()
 })

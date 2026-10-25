@@ -152,15 +152,19 @@ function mejlTillHyresgast(rec, mallnamn) {
 }
 
 // Kör uppdatera_kalender.py. Under provet skrivs en kopia av hyr.html i
-// pb_data/forhandsvisning/, aldrig den riktiga sidan.
+// pb_data/forhandsvisning/, aldrig den riktiga sidan. Kopian visas av
+// testversionen av hemsidan (hemsida_prov.py), och där leder knappen för
+// bokningsförfrågan till formuläret i stället för till e-post.
 function uppdateraKalender() {
   const fil = inst().kalenderfil
   try {
     try {
       $os.stat(fil)
     } catch (_) {
+      const html = toString($os.readFile(`${__hooks}/../../hyr.html`))
+        .replace(/href="mailto:[^"]*subject=Bokningsf[^"]*"/, `href="${inst().adress}/"`)
       $os.mkdirAll(fil.replace(/\/[^/]*$/, ""), 0o755)
-      $os.writeFile(fil, $os.readFile(`${__hooks}/../../hyr.html`), 0o644)
+      $os.writeFile(fil, html, 0o644)
     }
     $os.cmd("python3", `${__hooks}/../uppdatera_kalender.py`,
       "--tjanst", inst().lokal, "--fil", fil).output()

@@ -20,6 +20,7 @@ pb_hooks/stod.js           hjälpfunktioner
 pb_public/                 formuläret för bokningsförfrågan (provversion)
 uppdatera_kalender.py      skriver in bekräftade datum i kalendern i hyr.html
 epost_prov.py              testbrevlåda som sparar mejlen som filer i stället för att skicka dem
+hemsida_prov.py            testversion av hemsidan, med kalendern från provet
 ```
 
 Det här checkas **inte** in: programfilen `pocketbase`, datamappen `pb_data/` (den innehåller
@@ -43,9 +44,9 @@ administrationssida.
 4. **Svar.** Den som frågat får ett mejl enligt mallarna i `pb_hooks/mallar.js`. De andra
    bokningsansvariga får veta att förfrågan är besvarad. Har fler frågat om samma dag visar sidan
    länkar för att avböja dem.
-5. **Kalendern.** `uppdatera_kalender.py` körs varje gång en förfrågan godkänns eller ändras. Under
-   provet skriver den en kopia, som visas på http://127.0.0.1:8097/forhandsvisning/hyr.html.
-   Den riktiga `hyr.html` ändras inte.
+5. **Kalendern.** `uppdatera_kalender.py` körs varje gång en förfrågan godkänns eller ändras, och
+   varje timme. Under provet skriver den en kopia av `hyr.html`, som visas i testversionen av
+   hemsidan. Den riktiga `hyr.html` ändras inte.
 6. **Påminnelse.** Har ingen svarat på tre dagar kommer ett nytt mejl, kl. 8 på morgonen.
 
 Länken i mejlet fungerar bara för just den förfrågan. Den som har tillgång till mejlet kan alltså
@@ -83,13 +84,19 @@ cd tjanst
 cp installningar.exempel.env installningar.env
 python3 epost_prov.py      # testbrevlådan, i ett eget terminalfönster
 ./starta.sh                # tjänsten, i ett eget terminalfönster
+python3 hemsida_prov.py    # testversionen av hemsidan, i ett eget terminalfönster
 ```
 
 Öppna sedan i webbläsaren på samma dator:
 
+- **Testversionen av hemsidan:** http://127.0.0.1:8096/ (under *Hyr bygdegården* leder knappen
+  för bokningsförfrågan till formuläret)
 - **Formuläret:** http://127.0.0.1:8097/
-- **Kalendern under provet:** http://127.0.0.1:8097/forhandsvisning/hyr.html
 - **Administrationssidan:** http://127.0.0.1:8097/_/ (logga in med adressen och lösenordet ovan)
+
+Testversionen av hemsidan visar bara hemsidans egna filer: html-filerna och mapparna `css/` och
+`bilder/`. Databasen och inställningarna i `tjanst/` går inte att nå därifrån. `hyr.html` visas
+med kalendern från provet. Innan någon förfrågan har besvarats visas den vanliga `hyr.html`.
 
 Mejlen hamnar i `verktyg/mejl/` som `.eml`-filer. De går att öppna i ett vanligt e-postprogram,
 och länkarna i dem fungerar. Testbrevlådan skriver också ut ämnesraden för varje mejl.
@@ -135,7 +142,7 @@ uppdaterad*. Om tjänsten inte svarar ändras ingenting. Under provperioden: kö
 kopia, så att de påhittade bokningarna inte hamnar på den riktiga sidan.
 
 Tjänsten kör skriptet själv mot filen i `BOKNING_KALENDERFIL` (som standard
-`pb_data/forhandsvisning/hyr.html`). Att ändringen sedan publiceras på hemsidan av sig själv kräver
+`pb_data/forhandsvisning/hyr.html`, som testversionen av hemsidan visar). Att ändringen sedan publiceras på hemsidan av sig själv kräver
 ett beslut, se *Inte klart*.
 
 ## PocketBase flyttar från GitHub
