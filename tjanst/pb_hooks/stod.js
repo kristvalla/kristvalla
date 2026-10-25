@@ -217,6 +217,15 @@ function uppdateraKalender() {
   }
 }
 
+// Ändras när stil.css ändras, så att webbläsare inte använder en gammal sparad kopia.
+function stilVersion() {
+  try {
+    return $os.stat(`${__hooks}/../pb_public/stil.css`).modTime().unix()
+  } catch (_) {
+    return 0
+  }
+}
+
 function sida(rubrik, innehall, inbaddad) {
   return `<!doctype html>
 <html lang="sv">
@@ -225,7 +234,7 @@ function sida(rubrik, innehall, inbaddad) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
   <title>${esc(rubrik)} – Kristvalla Bygdegårdsförening</title>
-  <link rel="stylesheet" href="/stil.css">
+  <link rel="stylesheet" href="/stil.css?v=${stilVersion()}">
 </head>
 <body${inbaddad ? ' class="inbaddad"' : ""}>
   <p class="forslag">FÖRSLAG. Provversion med påhittade uppgifter. Används inte på den riktiga sidan.</p>
