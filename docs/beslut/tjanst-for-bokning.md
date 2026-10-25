@@ -87,8 +87,8 @@ program.
 
 ## Personuppgifter
 
-En bokningsförfrågan innehåller namn, e-post, önskat datum, ungefärligt antal personer och vad
-det gäller. Inget mer.
+En bokningsförfrågan innehåller namn, e-post, önskat datum och tid, ungefärligt antal personer,
+vad det gäller och om personen säger sig vara medlem. Inget mer.
 
 - Bara föreningen ser uppgifterna. Föreningen är personuppgiftsansvarig.
 - Uppgifterna sparas ⚠️ [hur länge, enligt föreningens beslut] och tas sedan bort.

@@ -52,8 +52,46 @@ function fyll(text, rec, meddelande) {
   const tillagg = meddelande ? `\n${meddelande}\n` : ""
   return text
     .replaceAll("{namn}", rec.getString("namn"))
+    .replaceAll("{tid}", tidText(tidAv(rec)).toLowerCase())
     .replaceAll("{datum}", datumText(rec.getString("datum")))
     .replaceAll("{meddelande}", tillagg)
+}
+
+// --- Tider: hel dag ("dag") eller pass ("fm", "em", "kv"), se mallar.js ---
+
+// Tiden för en förfrågan. Äldre förfrågningar utan tid gällde hela dagen.
+function tidAv(rec) {
+  const tid = Array.from(rec.getStringSlice("tid") || [])
+  return tid.length ? tid : ["dag"]
+}
+
+// Krockar två tider? Hel dag krockar med allt, pass bara med samma pass.
+function krockar(a, b) {
+  if (!a.length || !b.length) return false
+  return a.includes("dag") || b.includes("dag") || a.some((k) => b.includes(k))
+}
+
+// Allt som redan är bekräftat ett visst datum, som en lista med koder.
+function upptaget(datum, uteslutId) {
+  const bekraftade = $app.findRecordsByFilter("forfragningar",
+    "datum = {:datum} && status = 'bekräftad' && id != {:id}", "", 50, 0,
+    { datum: datum, id: uteslutId || "" })
+  const koder = []
+  for (const r of bekraftade) for (const k of tidAv(r)) if (!koder.includes(k)) koder.push(k)
+  return koder
+}
+
+// Är hela dagen upptagen, antingen av en heldag eller av alla pass?
+function heltUpptaget(koder) {
+  const mallar = require(`${__hooks}/mallar.js`)
+  return koder.includes("dag") || mallar.pass.every((p) => koder.includes(p.kod))
+}
+
+// "Hel dag (kl. 09–01)" eller "Förmiddag (kl. 09–12), Kväll (kl. 17–20)".
+function tidText(tid) {
+  const mallar = require(`${__hooks}/mallar.js`)
+  const alla = [mallar.helDag, ...mallar.pass]
+  return alla.filter((p) => tid.includes(p.kod)).map((p) => `${p.namn} (kl. ${p.tid})`).join(", ")
 }
 
 function lank(rec, val) {
@@ -63,12 +101,13 @@ function lank(rec, val) {
 
 // Hur det ser ut för samma dag: är den redan bokad, och vilka andra frågar om den?
 function lage(rec) {
+  const tid = tidAv(rec)
   const samma = $app.findRecordsByFilter("forfragningar",
-    "datum = {:datum} && id != {:id}", "created", 50, 0,
+    "datum = {:datum} && id != {:id} && status = 'ny'", "created", 50, 0,
     { datum: rec.getString("datum"), id: rec.id })
   return {
-    bokad: samma.some((r) => r.getString("status") === "bekräftad"),
-    andraNya: samma.filter((r) => r.getString("status") === "ny"),
+    bokad: krockar(tid, upptaget(rec.getString("datum"), rec.id)),
+    andraNya: samma.filter((r) => krockar(tid, tidAv(r))),
   }
 }
 
@@ -97,15 +136,17 @@ function mejlTillAnsvariga(rec, rubrik) {
   const mallar = require(`${__hooks}/mallar.js`)
   const l = lage(rec)
   const datum = datumText(rec.getString("datum"))
-  const ledig = l.bokad ? "NEJ, dagen är redan bokad." : "Ja, dagen är ledig."
-  const andra = l.andraNya.length ? `${l.andraNya.length} till har frågat om samma dag.` : ""
+  const ledig = l.bokad ? "NEJ, tiden är redan bokad." : "Ja, tiden är ledig."
+  const andra = l.andraNya.length ? `${l.andraNya.length} till har frågat om samma tid.` : ""
   const fakta = [
     ["Datum", datum],
+    ["Tid", tidText(tidAv(rec))],
     ["Ledig?", `${ledig} ${andra}`],
     ["Namn", rec.getString("namn")],
     ["E-post", rec.getString("epost")],
     ["Antal personer", rec.getString("antal")],
     ["Vad det gäller", rec.getString("syfte")],
+    ["Medlem", rec.getBool("medlem") ? "Ja, vill ha medlemspris. Kontrollera." : "Nej"],
     ["Hyresavtal", rec.getString("avtal") ? `Godkänt, version ${rec.getString("avtal")}` : "Inte godkänt"],
   ]
   const text = `${rubrik}
@@ -168,7 +209,8 @@ function uppdateraKalender() {
     $os.mkdirAll(fil.replace(/\/[^/]*$/, ""), 0o755)
     $os.writeFile(ny, html, 0o644)
     $os.cmd("python3", `${__hooks}/../uppdatera_kalender.py`,
-      "--tjanst", inst().lokal, "--fil", ny, "--boka-adress", inst().adress).output()
+      "--tjanst", inst().lokal, "--fil", ny, "--boka-adress", inst().adress,
+      "--pass", require(`${__hooks}/mallar.js`).pass.map((p) => p.kod).join(",")).output()
     $os.rename(ny, fil)
   } catch (err) {
     $app.logger().error("Kunde inte uppdatera kalendern", "fel", String(err))
@@ -198,15 +240,24 @@ function sida(rubrik, innehall, inbaddad) {
 // Formuläret för bokningsförfrågan. datum (ÅÅÅÅ-MM-DD) fylls i om det finns,
 // till exempel när man har klickat på en dag i kalendern på hemsidan.
 function formular(datum, inbaddad) {
+  const mallar = require(`${__hooks}/mallar.js`)
   const giltigt = /^\d{4}-\d{2}-\d{2}$/.test(datum || "") ? datum : ""
+  const koder = giltigt ? upptaget(giltigt, "") : []
   let lageText = ""
-  if (giltigt) {
-    const bokad = $app.countRecords("forfragningar",
-      $dbx.hashExp({ datum: giltigt, status: "bekräftad" })) > 0
-    lageText = bokad
-      ? `<p class="varning">${esc(datumText(giltigt))} är redan bokat. Välj gärna ett annat datum.</p>`
-      : `<p class="notis">Du frågar om <strong>${esc(datumText(giltigt))}</strong>.</p>`
+  if (giltigt && heltUpptaget(koder)) {
+    lageText = `<p class="varning">${esc(datumText(giltigt))} är redan bokat. Välj gärna ett annat datum.</p>`
+  } else if (giltigt) {
+    const bokadePass = mallar.pass.filter((p) => koder.includes(p.kod)).map((p) => p.namn.toLowerCase())
+    lageText = `<p class="notis">Du frågar om <strong>${esc(datumText(giltigt))}</strong>.` +
+      (bokadePass.length ? ` Redan bokat: ${esc(bokadePass.join(", "))}.` : "") + `</p>`
   }
+  // Ett val i formuläret för tid. Det som redan är bokat går inte att välja.
+  const passVal = mallar.pass.map((p) => {
+    const tagen = koder.includes("dag") || koder.includes(p.kod)
+    return `<div class="val"><input type="checkbox" id="pass-${p.kod}" name="pass_${p.kod}" value="ja"${tagen ? " disabled" : ""}>
+          <label for="pass-${p.kod}">${esc(p.namn)}, kl. ${esc(p.tid)}${tagen ? " (bokat)" : ""}</label></div>`
+  }).join("\n        ")
+  const dagTagen = koder.length > 0
   return sida("Skicka en bokningsförfrågan", `
     ${lageText}
     <p>Fyll i formuläret, så hör vi av oss via e-post. Dagen är inte bokad förrän du har fått
@@ -217,6 +268,17 @@ function formular(datum, inbaddad) {
       <label for="datum">Datum
         <span class="hjalp">Skriv som ÅÅÅÅ-MM-DD om du inte får upp en kalender.</span></label>
       <input id="datum" name="datum" type="date" required value="${esc(giltigt)}">
+
+      <fieldset class="tid">
+        <legend>Tid</legend>
+        <div class="val"><input type="radio" id="omfattning-dag" name="omfattning" value="dag"${dagTagen ? " disabled" : ""}>
+          <label for="omfattning-dag">${esc(mallar.helDag.namn)}, kl. ${esc(mallar.helDag.tid)}${dagTagen ? " (går inte, delvis bokat)" : ""}</label></div>
+        <div class="val"><input type="radio" id="omfattning-pass" name="omfattning" value="pass">
+          <label for="omfattning-pass">Ett eller flera pass om tre timmar:</label></div>
+        <div class="pass">
+        ${passVal}
+        </div>
+      </fieldset>
 
       <label for="namn">Namn</label>
       <input id="namn" name="namn" required maxlength="100" autocomplete="name">
@@ -230,6 +292,11 @@ function formular(datum, inbaddad) {
       <label for="syfte">Vad gäller det?
         <span class="hjalp">Till exempel födelsedagsfest, minnesstund eller föreningsmöte.</span></label>
       <textarea id="syfte" name="syfte" rows="3" maxlength="500" required></textarea>
+
+      <div class="kryss">
+        <input id="medlem" name="medlem" type="checkbox" value="ja">
+        <label for="medlem">Jag är medlem i Kristvalla Bygdegårdsförening och vill ha medlemspris.</label>
+      </div>
 
       <div class="kryss">
         <input id="avtal" name="avtal" type="checkbox" value="ja" required>
@@ -270,4 +337,5 @@ function tillatInbaddning(e) {
 module.exports = {
   inst, esc, datumText, nu, lank, lage, skicka,
   mejlTillAnsvariga, mejlTillHyresgast, uppdateraKalender, sida, formular, tillatInbaddning, avtalLank,
+  tidAv, krockar, upptaget, heltUpptaget, tidText,
 }

@@ -40,8 +40,9 @@ administrationssida.
 
 1. **Förfrågan.** Den som vill hyra trycker på en ledig dag i kalendern på *Hyr bygdegården*.
    Formuläret öppnas i en ruta ovanpå kalendern, med datumet ifyllt. Utan JavaScript är dagen en
-   vanlig länk till formuläret. Där fyller man i namn, e-post, datum, ungefärligt antal
-   personer och vad det gäller. Förfrågan sparas med status **ny**, och den som frågat får ett
+   vanlig länk till formuläret. Där väljer man hel dag eller ett eller flera pass om tre timmar,
+   och fyller i namn, e-post, ungefärligt antal personer och vad det gäller. Den som är medlem
+   kryssar i det, för medlemspris. Förfrågan sparas med status **ny**, och den som frågat får ett
    mejl om att den har kommit fram.
 2. **Notis.** Bokningsansvariga får ett mejl med allt som behövs för att bedöma förfrågan: om
    dagen är ledig, om fler har frågat om samma dag och en checklista. Mejlet har två knappar:
@@ -71,15 +72,19 @@ Vem ser vad:
 | Tabell | Innehåll | Vem kan läsa |
 |---|---|---|
 | `forfragningar` | Namn, e-post, datum, antal, vad det gäller, status | Bara administratörer |
-| `bokade_datum` | Bara datumen för bekräftade bokningar | Alla |
+| `bokade_datum` | Bara datum och tid för bekräftade bokningar | Alla |
 
 Fler skydd:
 
 - Besökare kan inte sätta status själva. Allt som kommer via formuläret blir **ny**.
 - Länkarna i mejlen har en slumpad nyckel. En förfrågan som redan är besvarad kan inte ändras via
   länken.
-- Samma dag kan inte bekräftas för två förfrågningar.
-- Formuläret tar inte emot datum som har passerat, eller dagar som redan är bekräftade.
+- Samma tid kan inte bekräftas för två förfrågningar. Hel dag krockar med alla pass, och ett
+  pass bara med samma pass. Passen och deras klockslag står i `pb_hooks/mallar.js`.
+- I kalendern är en dag *bokad* när hela dagen eller alla pass är bokade, och *delvis bokad* när
+  några pass är bokade. Delvis bokade dagar går fortfarande att klicka på.
+- Formuläret tar inte emot datum som har passerat, eller tider som redan är bekräftade. Det som
+  redan är bokat går inte att välja.
 - Högst fem förfrågningar per minut från samma adress. Ett dolt fält fångar skräpprogram.
 - Namn och texter från formuläret visas alltid som vanlig text, aldrig som kod.
 - Formuläret fungerar utan JavaScript.
