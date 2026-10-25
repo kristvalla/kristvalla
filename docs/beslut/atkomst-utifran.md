@@ -38,7 +38,7 @@ Undersökt 2026-10-25. Priser och villkor ändras. ⚠️ verifiera före beslut
 | Alternativ | Vem driver det | Kostnad | Bedömning |
 |---|---|---|---|
 | **Cloudflare Tunnel** | Cloudflare, USA | Gratis | Fungerar bra. Ett amerikanskt företag kan läsa trafiken. Kräver att domänen sköts av Cloudflare |
-| **Pangolin Cloud** | Fossorial Inc., New York, USA | Gratis upp till 5 användare och 5 domäner | Fungerar som Cloudflare Tunnel och har noder i EU. Ett amerikanskt företag kan läsa trafiken. Har ett personuppgiftsbiträdesavtal med EU:s standardavtalsklausuler |
+| **Pangolin Cloud** | Fossorial Inc., New York, USA | Gratis upp till 5 användare och 5 domäner. Egen domän krävs, färdiga adresser kostar | Fungerar som Cloudflare Tunnel och har noder i EU. Noden i EU står hos Amazon Web Services i Frankfurt (sett 2026-10-25), så två amerikanska företag finns i kedjan. Ett amerikanskt företag kan läsa trafiken. Har ett personuppgiftsbiträdesavtal med EU:s standardavtalsklausuler |
 | **Pangolin på egen server i EU** | Föreningen, på en hyrd server hos t.ex. Hetzner (Tyskland, Finland) eller Scaleway (Frankrike) | Ca 3–6 € i månaden | Ingen annan kan läsa trafiken. En server till att hålla uppdaterad |
 | **Expose** | Beyond Code GmbH, troligen Tyskland | Gratis med tidsgräns och slumpad adress, egen domän kostar | Gratisnivån duger inte, eftersom adressen byts varje gång |
 | **nsl.sh** | Aptero SAS, Paris | Gratis | Trafiken går via både Cloudflare och nsl.sh, som båda kan läsa den. Ingen egen domän. Avfärdat |
@@ -70,7 +70,9 @@ Källor: [pangolin.net/pricing](https://pangolin.net/pricing),
 ## Det här behövs
 
 - **En domän** som tillhör föreningen, till exempel kristvalla.se. ⚠️ [om och var den är
-  registrerad]
+  registrerad]. Under provet används en tillfällig domän som den som sköter provet äger, med
+  DNS hos deSEC (ideell förening i Berlin). Gratis dedyn.io-adresser hos deSEC gick inte att
+  registrera i oktober 2026, och DuckDNS saknar de CNAME-poster som Pangolin kräver.
 - **Ett konto hos Pangolin Cloud** under provet. Kontot ska senare tillhöra föreningen.
 - **Programmet Newt** på datorn med tjänsten. Det håller tunneln öppen. Se
   [tjanst/README.md](../../tjanst/README.md).
