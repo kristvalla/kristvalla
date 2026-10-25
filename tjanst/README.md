@@ -21,11 +21,15 @@ pb_public/                 formuläret för bokningsförfrågan (provversion)
 uppdatera_kalender.py      skriver in bekräftade datum i kalendern i hyr.html
 epost_prov.py              testbrevlåda som sparar mejlen som filer i stället för att skicka dem
 hemsida_prov.py            testversion av hemsidan, med kalendern från provet
+systemd/                   tjänster som startar allt ovan när datorn startar
 ```
 
-Det här checkas **inte** in: programfilen `pocketbase`, datamappen `pb_data/` (den innehåller
+Det här checkas **inte** in: programfilen `pocketbase`, datamappen (den innehåller
 förfrågningarna, och de innehåller personuppgifter), `installningar.env` (den kan innehålla
 lösenord) och `verktyg/` (testbrevlådans mejl).
+
+Lägg helst datamappen och inställningarna **utanför** projektmappen, så att de inte följer med
+om projektmappen säkerhetskopieras till en molntjänst. Se *Köra som tjänster* nedan.
 
 ## Så fungerar det
 
@@ -177,9 +181,36 @@ ställe och i samma form, annars behöver skriptet ändras.
 | Nedladdning av en version | ⚠️ [adressformat, när utvecklaren har publicerat det] |
 | Kontrollsummor | ⚠️ [adress] |
 
+## Köra som tjänster
+
+På en Linux-dator med systemd kan tjänsten, testbrevlådan och testversionen av hemsidan startas
+automatiskt när datorn startar. De körs som den vanliga användaren, utan administratörsrättigheter.
+Filerna i `systemd/` förutsätter att repot ligger i `~/Projects/kristvalla`.
+
+```sh
+mkdir -p ~/.config/kristvalla ~/.local/share/kristvalla
+cp installningar.exempel.env ~/.config/kristvalla/installningar.env
+chmod 600 ~/.config/kristvalla/installningar.env     # bara du kan läsa den
+nano ~/.config/kristvalla/installningar.env          # fyll i, BOKNING_DATA pekar på datamappen
+
+cp systemd/kristvalla-*.service ~/.config/systemd/user/
+systemctl --user daemon-reload
+systemctl --user enable --now kristvalla-epost kristvalla-tjanst kristvalla-hemsida
+sudo loginctl enable-linger "$USER"     # så att tjänsterna startar utan att någon loggar in
+```
+
+| Tjänst | Vad | Adress |
+|---|---|---|
+| `kristvalla-tjanst` | Bokningstjänsten (PocketBase) | http://127.0.0.1:8097/ |
+| `kristvalla-hemsida` | Testversionen av hemsidan | http://127.0.0.1:8096/ |
+| `kristvalla-epost` | Testbrevlådan | 127.0.0.1:1025 |
+
+Efter en ändring i inställningarna: `systemctl --user restart kristvalla-tjanst kristvalla-hemsida`.
+Läget visas med `systemctl --user status kristvalla-tjanst`.
+
 ## Börja om
 
-Stoppa tjänsten och ta bort mappen `pb_data/`. Nästa gång tjänsten startar skapas tabellerna på
+Stoppa tjänsten och ta bort datamappen (`BOKNING_DATA`, annars `pb_data/`). Nästa gång tjänsten startar skapas tabellerna på
 nytt, och administratören behöver skapas igen.
 
 ## Inte klart

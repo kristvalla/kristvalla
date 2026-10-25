@@ -16,7 +16,7 @@ function inst() {
     svarsadress: env("BOKNING_SVARSADRESS", "kristvalla@proton.me"),
     amnesprefix: env("BOKNING_AMNESPREFIX", "[PROV] "),
     paminnDagar: parseInt(env("BOKNING_PAMINN_DAGAR", "3"), 10),
-    kalenderfil: env("BOKNING_KALENDERFIL", `${__hooks}/../pb_data/forhandsvisning/hyr.html`),
+    kalenderfil: env("BOKNING_KALENDERFIL", `${$app.dataDir()}/forhandsvisning/hyr.html`),
   }
 }
 
@@ -152,7 +152,7 @@ function mejlTillHyresgast(rec, mallnamn) {
 }
 
 // Kör uppdatera_kalender.py. Under provet skrivs en kopia av hyr.html i
-// pb_data/forhandsvisning/, aldrig den riktiga sidan. Kopian visas av
+// datamappen (forhandsvisning/hyr.html), aldrig den riktiga sidan. Kopian visas av
 // testversionen av hemsidan (hemsida_prov.py), och där leder knappen för
 // bokningsförfrågan till formuläret i stället för till e-post.
 function uppdateraKalender() {

@@ -1,0 +1,13 @@
+[Unit]
+Description=Kristvalla – testversion av hemsidan
+After=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=%h/.config/kristvalla/installningar.env
+ExecStart=/usr/bin/python3 %h/Projects/kristvalla/tjanst/hemsida_prov.py 127.0.0.1:8096
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

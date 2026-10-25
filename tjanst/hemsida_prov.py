@@ -4,7 +4,7 @@
 Visar hemsidans statiska filer, precis som de ligger i repot, med två skillnader:
 
 - hyr.html hämtas från förhandsvisningen som bokningstjänsten uppdaterar
-  (pb_data/forhandsvisning/hyr.html). Där syns bokningarna från provet, och
+  (forhandsvisning/hyr.html i datamappen, se BOKNING_DATA). Där syns bokningarna från provet, och
   knappen för bokningsförfrågan leder till formuläret. Den riktiga hyr.html
   ändras aldrig.
 - Överst på varje sida står att det är en testversion.
@@ -21,6 +21,7 @@ Skriptet behöver bara Python 3, inga tillägg.
 
 import http.server
 import mimetypes
+import os
 import re
 import sys
 import urllib.parse
@@ -28,7 +29,8 @@ from pathlib import Path
 
 TJANST = Path(__file__).resolve().parent
 REPO = TJANST.parent
-FORHANDSVISNING = TJANST / "pb_data" / "forhandsvisning" / "hyr.html"
+FORHANDSVISNING = Path(os.environ.get("BOKNING_KALENDERFIL") or
+                       Path(os.environ.get("BOKNING_DATA") or TJANST / "pb_data") / "forhandsvisning" / "hyr.html")
 TILLATNA_MAPPAR = ("css", "bilder")
 
 TESTRAD = ('<p style="margin:0;padding:.6rem 1rem;background:#fff3cd;border-bottom:2px solid #b58900;'

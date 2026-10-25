@@ -1,0 +1,12 @@
+[Unit]
+Description=Kristvalla – testbrevlåda för bokningstjänsten
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 -u %h/Projects/kristvalla/tjanst/epost_prov.py 127.0.0.1:1025
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

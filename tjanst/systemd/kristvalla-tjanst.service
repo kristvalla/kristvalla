@@ -1,0 +1,13 @@
+[Unit]
+Description=Kristvalla – bokningstjänsten (PocketBase), provversion
+After=network-online.target kristvalla-epost.service
+
+[Service]
+Type=simple
+Environment=BOKNING_INSTALLNINGAR=%h/.config/kristvalla/installningar.env
+ExecStart=%h/Projects/kristvalla/tjanst/starta.sh
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
