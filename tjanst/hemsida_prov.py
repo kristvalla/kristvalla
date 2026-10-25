@@ -60,6 +60,15 @@ def hitta(sokvag):
 
 class Hemsida(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
+        # Testversionen ska aldrig hamna i sökmotorer och förväxlas med hemsidan.
+        if urllib.parse.urlsplit(self.path).path == "/robots.txt":
+            data = b"User-agent: *\nDisallow: /\n"
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain; charset=utf-8")
+            self.send_header("Content-Length", str(len(data)))
+            self.end_headers()
+            self.wfile.write(data)
+            return
         fil = hitta(urllib.parse.urlsplit(self.path).path)
         if fil is None:
             self.send_error(404, "Sidan finns inte")
@@ -73,6 +82,7 @@ class Hemsida(http.server.BaseHTTPRequestHandler):
         self.send_header("Content-Type", typ)
         self.send_header("Content-Length", str(len(data)))
         self.send_header("Cache-Control", "no-store")
+        self.send_header("X-Robots-Tag", "noindex, nofollow")
         self.end_headers()
         self.wfile.write(data)
 
