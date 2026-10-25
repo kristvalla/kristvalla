@@ -22,6 +22,8 @@ uppdatera_kalender.py      skriver in bekräftade datum i kalendern i hyr.html
 epost_prov.py              testbrevlåda som sparar mejlen som filer i stället för att skicka dem
 hemsida_prov.py            testversion av hemsidan, med kalendern från provet
 systemd/                   tjänster som startar allt ovan när datorn startar
+hamta-newt.sh              hämtar Newt, som håller tunneln till Pangolin öppen
+newt.exempel.env           mall för tunnelns uppgifter
 ```
 
 Det här checkas **inte** in: programfilen `pocketbase`, datamappen (den innehåller
@@ -207,6 +209,53 @@ sudo loginctl enable-linger "$USER"     # så att tjänsterna startar utan att n
 
 Efter en ändring i inställningarna: `systemctl --user restart kristvalla-tjanst kristvalla-hemsida`.
 Läget visas med `systemctl --user status kristvalla-tjanst`.
+
+## Åtkomst utifrån med Pangolin
+
+Under provet nås tjänsten utifrån via Pangolin Cloud. Varför, och vad det innebär, står i
+[docs/beslut/atkomst-utifran.md](../docs/beslut/atkomst-utifran.md). Pangolin kan läsa trafiken,
+så bara påhittade uppgifter får användas.
+
+Så kopplas tjänsten in:
+
+1. **Konto och domän.** Skapa ett konto på https://app.pangolin.net/ och lägg till domänen där.
+2. **Site.** Skapa en *site* av typen Newt. Pangolin visar då ett ID och en hemlighet.
+3. **Newt på datorn:**
+
+   ```sh
+   ./hamta-newt.sh
+   cp newt.exempel.env ~/.config/kristvalla/newt.env
+   chmod 600 ~/.config/kristvalla/newt.env
+   nano ~/.config/kristvalla/newt.env       # fyll i ID och hemlighet
+   cp systemd/kristvalla-newt.service ~/.config/systemd/user/
+   systemctl --user daemon-reload
+   systemctl --user enable --now kristvalla-newt
+   ```
+
+4. **Resurser i Pangolin**, en per adress. Båda pekar på sajten och `127.0.0.1`. Slå av Pangolins
+   inloggning, så att besökare kommer in utan konto:
+
+   | Resurs | Mål | Till exempel |
+   |---|---|---|
+   | Bokningstjänsten | `127.0.0.1:8097` | `boka.<domän>` |
+   | Testversionen av hemsidan | `127.0.0.1:8096` | `prov.<domän>` |
+
+5. **Stäng administrationen utåt.** Lägg till regler i Pangolin för bokningstjänsten som nekar
+   sökvägarna `/_/*` och `/api/*`. Formuläret och sidan för beslut använder dem inte.
+   Administrationssidan nås då bara från datorn själv.
+6. **Inställningar** i `~/.config/kristvalla/installningar.env`:
+
+   ```sh
+   BOKNING_ADRESS=https://boka.<domän>     # länkarna i mejlen
+   BOKNING_PROXYHUVUD=X-Forwarded-For      # besökarens egen adress, för gränsen per minut
+   ```
+
+   Starta sedan om: `systemctl --user restart kristvalla-tjanst kristvalla-hemsida`.
+
+Tjänsten fortsätter att lyssna bara på `127.0.0.1`. Allt utifrån kommer genom tunneln.
+
+Före riktig drift byts Pangolin Cloud mot Pangolin på föreningens egen server i EU. Då ändras
+bara `PANGOLIN_ENDPOINT` och uppgifterna i `newt.env`.
 
 ## Börja om
 

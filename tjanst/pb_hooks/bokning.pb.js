@@ -27,6 +27,12 @@ onBootstrap((e) => {
     s.smtp.password = env("SMTP_LOSENORD")
     s.smtp.tls = env("SMTP_TLS") === "true"
   }
+  // Bakom en tunnel (Pangolin) kommer alla anrop från tunneln. Besökarens egen
+  // adress står då i ett huvud, och den behövs för gränsen för antal förfrågningar.
+  // Lita bara på huvudet när tjänsten lyssnar på 127.0.0.1, så att ingen kan
+  // skicka ett falskt huvud direkt till tjänsten.
+  s.trustedProxy.headers = env("BOKNING_PROXYHUVUD") ? [env("BOKNING_PROXYHUVUD")] : []
+  s.trustedProxy.useLeftmostIP = false
   e.app.save(s)
 })
 
