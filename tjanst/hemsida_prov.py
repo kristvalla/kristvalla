@@ -33,8 +33,12 @@ FORHANDSVISNING = Path(os.environ.get("BOKNING_KALENDERFIL") or
                        Path(os.environ.get("BOKNING_DATA") or TJANST / "pb_data") / "forhandsvisning" / "hyr.html")
 TILLATNA_MAPPAR = ("css", "bilder", "js")
 
+# Länken "Lämna synpunkter" öppnar ett mejl till föreningen med några frågor ifyllda.
+SYNPUNKTER = ("mailto:kristvalla@proton.me?subject=Synpunkter%20p%C3%A5%20testversionen%20av%20hemsidan&body=Sida%20jag%20tittade%20p%C3%A5%3A%0A%0ADet%20h%C3%A4r%20var%20bra%3A%0A%0ADet%20h%C3%A4r%20var%20sv%C3%A5rt%20att%20f%C3%B6rst%C3%A5%20eller%20hitta%3A%0A%0A%C3%96vrigt%3A%0A")
+
 TESTRAD = ('<p style="margin:0;padding:.6rem 1rem;background:#fff3cd;border-bottom:2px solid #b58900;'
-           'font-weight:700;text-align:center">TESTVERSION av hemsidan. Bokningarna är påhittade.</p>')
+           'font-weight:700;text-align:center">TESTVERSION av hemsidan. Bokningarna är påhittade. '
+           f'<a href="{SYNPUNKTER.replace("&", "&amp;")}" style="color:#5a1712">Lämna synpunkter</a></p>')
 
 
 def hitta(sokvag):
