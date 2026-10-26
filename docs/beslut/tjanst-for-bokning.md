@@ -87,8 +87,8 @@ program.
 
 ## Personuppgifter
 
-En bokningsförfrågan innehåller namn, e-post, önskat datum, ungefärligt antal personer och vad
-det gäller. Inget mer.
+En bokningsförfrågan innehåller namn, e-post, önskat datum och tid, ungefärligt antal personer,
+vad det gäller och om personen säger sig vara medlem. Inget mer.
 
 - Bara föreningen ser uppgifterna. Föreningen är personuppgiftsansvarig.
 - Uppgifterna sparas ⚠️ [hur länge, enligt föreningens beslut] och tas sedan bort.
@@ -98,7 +98,8 @@ det gäller. Inget mer.
 
 - **Åtkomst utifrån.** Ett vanligt bredbandsabonnemang har ofta ingen fast adress, och att
   öppna routern utåt är en säkerhetsrisk. Det vanliga är en tunnel ut till en mellanstation.
-  Mellanstationen ska ligga i EU.
+  Mellanstationen ska ligga i EU. Alternativen och valet för provet står i
+  [atkomst-utifran.md](atkomst-utifran.md).
 - **Fysisk säkerhet.** Den som hyr lokalen har tillgång till huset. Laptopen ska stå inlåst och
   ha krypterad hårddisk.
 - **Batteriet.** Ett batteri som alltid laddar kan svälla med åren. Ta ur det eller begränsa

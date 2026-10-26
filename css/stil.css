@@ -142,6 +142,55 @@ main { padding-bottom: 3rem; }
   border: 1px solid var(--linje); background: var(--kort); border-radius: 3px;
 }
 .ruta.bokad { border-color: var(--falu); background: var(--falu); }
+/* Delvis bokad: några pass är bokade, andra lediga */
+.belaggning td.delvis, .ruta.delvis { background: linear-gradient(to bottom right, var(--kort) 50%, #ecc8c4 50%); }
+.ruta.delvis { border-color: var(--falu); }
+
+/* Genvägar till delarna på en sida */
+.hopplankar { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0 1.5rem; }
+.hopplankar a {
+  padding: .45rem .9rem; border: 2px solid var(--falu); border-radius: 999px;
+  color: var(--falu); font-weight: 600; text-decoration: none;
+}
+.hopplankar a:hover { background: var(--falu); color: #fff; }
+
+/* Delar som går att fälla ut */
+details { margin: 1rem 0; border: 1px solid var(--linje); border-radius: var(--radie); background: var(--kort); }
+details > summary {
+  cursor: pointer; padding: .8rem 1rem; font-family: var(--serif); font-size: 1.2rem; font-weight: 700;
+  color: var(--falu); list-style-position: inside;
+}
+details > summary:hover { background: var(--papper); }
+details[open] > summary { border-bottom: 1px solid var(--linje); }
+details > :not(summary) { margin-left: 1rem; margin-right: 1rem; }
+details > :last-child { margin-bottom: 1rem; }
+details h3 { margin-top: 1.25rem; }
+
+/* Prislistan */
+.tabell { overflow-x: auto; }
+.prislista { width: 100%; border-collapse: collapse; }
+.prislista th, .prislista td { text-align: left; padding: .5rem .6rem .5rem 0; border-bottom: 1px solid var(--linje); vertical-align: top; }
+.prislista thead th { font-size: .85rem; color: var(--dampad); }
+.prislista tbody th { font-weight: 600; }
+/* Lediga dagar kan vara länkar till bokningsformuläret. Hela rutan går att klicka på. */
+.belaggning td:has(> a.boka-dag) { padding: 0; }
+.belaggning a.boka-dag {
+  display: block; padding: .45rem 0; color: var(--ek); font-weight: 700;
+  text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px;
+}
+.boka-tips { font-weight: 600; }
+.belaggning a.boka-dag:hover, .belaggning a.boka-dag:focus-visible {
+  background: var(--ek); color: #fff; outline-offset: -3px;
+}
+
+/* Rutan med bokningsformuläret, när JavaScript finns (js/kalender.js) */
+.boka-ruta {
+  width: min(40rem, 100vw - 1rem); height: min(52rem, 100dvh - 1rem); max-width: none; max-height: none;
+  padding: 0; border: 0; border-radius: var(--radie); box-shadow: 0 .5rem 2rem rgb(0 0 0 / .35);
+}
+.boka-ruta::backdrop { background: rgb(0 0 0 / .45); }
+.boka-ruta form { display: flex; justify-content: flex-end; margin: 0; padding: .4rem; background: var(--papper); }
+.boka-ruta iframe { display: block; width: 100%; height: calc(100% - 3.2rem); border: 0; }
 
 .notis {
   border-left: 4px solid var(--ek); background: #eef1e6;
@@ -171,12 +220,15 @@ ol.steg li { margin-bottom: .6rem; }
 @media print {
   html { font-size: 12pt; }
   body { background: #fff; }
-  .utkast, .meny, .knapp-rad, .hoppa, .genvagar { display: none; }
+  .utkast, .meny, .knapp-rad, .hoppa, .genvagar, .hopplankar { display: none; }
+  details { border: 0; }
+  details > summary { list-style: none; padding: 0; color: inherit; }
   .sidhuvud, .sidfot { border: 0; }
   a { color: inherit; text-decoration: none; }
   .kalender li, .belaggning { break-inside: avoid; }
   /* Bakgrundsfärg skrivs inte alltid ut, så bokade dagar stryks också över */
   .bokad { print-color-adjust: exact; -webkit-print-color-adjust: exact; text-decoration: line-through; }
+  .delvis { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
 }
 
 .visuellt-dold {

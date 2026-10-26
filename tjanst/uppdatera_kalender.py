@@ -10,6 +10,10 @@ Exempel:
     python3 uppdatera_kalender.py
     python3 uppdatera_kalender.py --manader 4 --tjanst http://127.0.0.1:8097
     python3 uppdatera_kalender.py --fil /tmp/hyr-prov.html
+    python3 uppdatera_kalender.py --boka-adress https://boka.example.se
+
+Med --boka-adress blir lediga dagar från och med i dag länkar till formuläret,
+med datumet ifyllt. Utan den visar kalendern bara lediga och bokade dagar.
 
 Skriptet behöver bara Python 3, inga tillägg.
 """
@@ -33,8 +37,12 @@ STANDARDFIL = Path(__file__).resolve().parent.parent / "hyr.html"
 
 
 def hamta_bokade(tjanst, fran):
-    """Hämtar bekräftade datum (ÅÅÅÅ-MM-DD) från och med 'fran'."""
-    bokade = set()
+    """Hämtar bekräftade bokningar från och med 'fran'.
+
+    Ger en ordlista: datum (ÅÅÅÅ-MM-DD) -> mängd med bokade tider, där "dag" är
+    hel dag och övriga koder är pass. Bokningar utan tid gäller hela dagen.
+    """
+    bokade = {}
     sida = 1
     while True:
         fraga = urllib.parse.urlencode({
@@ -48,14 +56,19 @@ def hamta_bokade(tjanst, fran):
         with urllib.request.urlopen(url, timeout=15) as svar:
             data = json.load(svar)
         for post in data["items"]:
-            bokade.add(post["datum"])
+            bokade.setdefault(post["datum"], set()).update(post.get("tid") or ["dag"])
         if len(data["items"]) < data["perPage"]:
             return bokade
         sida += 1
 
 
-def manadstabell(ar, manad, bokade):
-    """Bygger en <table> i samma form som i hyr.html."""
+def manadstabell(ar, manad, bokade, idag=None, boka_adress=None, pass_koder=()):
+    """Bygger en <table> i samma form som i hyr.html.
+
+    En dag är bokad om hela dagen eller alla pass är bokade, och delvis bokad om
+    några pass är bokade. Med boka_adress blir dagar som inte är fullbokade, från
+    och med idag, länkar till formuläret.
+    """
     huvud = "".join(f'<th scope="col" abbr="{lang}">{kort}</th>' for kort, lang in VECKODAGAR)
     rader = []
     for vecka in calendar.Calendar(firstweekday=0).monthdayscalendar(ar, manad):
@@ -63,8 +76,20 @@ def manadstabell(ar, manad, bokade):
         for dag in vecka:
             if dag == 0:
                 celler.append("<td></td>")
-            elif f"{ar:04d}-{manad:02d}-{dag:02d}" in bokade:
+                continue
+            datum = f"{ar:04d}-{manad:02d}-{dag:02d}"
+            tider = bokade.get(datum, set())
+            if "dag" in tider or (pass_koder and set(pass_koder) <= tider):
                 celler.append(f'<td class="bokad">{dag}<span class="visuellt-dold"> bokad</span></td>')
+                continue
+            delvis = bool(tider)
+            klass = ' class="delvis"' if delvis else ""
+            lage = "delvis bokad" if delvis else "ledig"
+            if boka_adress and datetime.date(ar, manad, dag) >= idag:
+                celler.append(f'<td{klass}><a class="boka-dag" href="{boka_adress}/?datum={datum}">{dag}'
+                              f'<span class="visuellt-dold"> {MANADER[manad - 1]}, {lage}, skicka förfrågan</span></a></td>')
+            elif delvis:
+                celler.append(f'<td{klass}>{dag}<span class="visuellt-dold"> delvis bokad</span></td>')
             else:
                 celler.append(f"<td>{dag}</td>")
         rader.append(f"          <tr>{''.join(celler)}</tr>")
@@ -92,6 +117,10 @@ def main():
                       help="adressen till bokningstjänsten (standard: %(default)s)")
     tolk.add_argument("--fil", type=Path, default=STANDARDFIL,
                       help="filen som ska uppdateras (standard: hyr.html i repot)")
+    tolk.add_argument("--boka-adress",
+                      help="formulärets adress; då blir lediga dagar länkar till formuläret")
+    tolk.add_argument("--pass", dest="pass_koder", default="fm,em,kv",
+                      help="koderna för passen; alla bokade betyder fullbokat (standard: %(default)s)")
     tolk.add_argument("--manader", type=int, default=3,
                       help="hur många månader som visas, från och med denna (standard: %(default)s)")
     args = tolk.parse_args()
@@ -108,7 +137,9 @@ def main():
 
     html = args.fil.read_text(encoding="utf-8")
 
-    tabeller = "\n".join(manadstabell(ar, manad, bokade) for ar, manad in manader)
+    boka_adress = args.boka_adress.rstrip("/") if args.boka_adress else None
+    pass_koder = tuple(k for k in args.pass_koder.split(",") if k)
+    tabeller = "\n".join(manadstabell(ar, manad, bokade, idag, boka_adress, pass_koder) for ar, manad in manader)
     html, antal = re.subn(r'(<div class="manader">\n).*?(\n    </div>)',
                           lambda m: m.group(1) + tabeller + m.group(2), html, count=1, flags=re.S)
     if antal != 1:

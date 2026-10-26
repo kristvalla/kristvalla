@@ -1,0 +1,17 @@
+[Unit]
+Description=Kristvalla – tunnel till Pangolin (Newt)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+EnvironmentFile=%h/.config/kristvalla/newt.env
+ExecStart=%h/Projects/kristvalla/tjanst/newt
+Restart=always
+RestartSec=5
+UMask=0077
+StandardOutput=append:%h/.local/share/kristvalla/newt.log
+StandardError=append:%h/.local/share/kristvalla/newt.log
+
+[Install]
+WantedBy=default.target

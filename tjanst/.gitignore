@@ -8,3 +8,6 @@ pb_data/
 installningar.env
 # Mejl som testbrevlådan har tagit emot.
 verktyg/
+# Programmet för tunneln till Pangolin, hämtas med hamta-newt.sh.
+newt
+newt.ny

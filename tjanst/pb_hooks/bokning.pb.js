@@ -27,6 +27,12 @@ onBootstrap((e) => {
     s.smtp.password = env("SMTP_LOSENORD")
     s.smtp.tls = env("SMTP_TLS") === "true"
   }
+  // Bakom en tunnel (Pangolin) kommer alla anrop från tunneln. Besökarens egen
+  // adress står då i ett huvud, och den behövs för gränsen för antal förfrågningar.
+  // Lita bara på huvudet när tjänsten lyssnar på 127.0.0.1, så att ingen kan
+  // skicka ett falskt huvud direkt till tjänsten.
+  s.trustedProxy.headers = env("BOKNING_PROXYHUVUD") ? [env("BOKNING_PROXYHUVUD")] : []
+  s.trustedProxy.useLeftmostIP = false
   e.app.save(s)
 })
 
@@ -38,16 +44,13 @@ onRecordCreate((e) => {
   e.next()
 }, "forfragningar")
 
-// Samma dag kan bara vara bekräftad för en förfrågan.
+// Samma tid kan bara vara bekräftad för en förfrågan. Hel dag krockar med alla pass.
 onRecordValidate((e) => {
   if (e.record.getString("status") === "bekräftad") {
-    const andra = $app.countRecords(
-      "forfragningar",
-      $dbx.hashExp({ datum: e.record.getString("datum"), status: "bekräftad" }),
-      $dbx.not($dbx.hashExp({ id: e.record.id })),
-    )
-    if (andra > 0) {
-      throw new BadRequestError("Datumet är redan bekräftat för en annan förfrågan.")
+    const stod = require(`${__hooks}/stod.js`)
+    const upptaget = stod.upptaget(e.record.getString("datum"), e.record.id)
+    if (stod.krockar(stod.tidAv(e.record), upptaget)) {
+      throw new BadRequestError("Tiden är redan bekräftad för en annan förfrågan samma dag.")
     }
   }
   e.next()
@@ -61,6 +64,14 @@ onRecordAfterUpdateSuccess((e) => {
   }
 }, "forfragningar")
 
+// En bokning som läggs in som bekräftad direkt på administrationssidan.
+onRecordAfterCreateSuccess((e) => {
+  e.next()
+  if (e.record.getString("status") === "bekräftad") {
+    require(`${__hooks}/stod.js`).uppdateraKalender()
+  }
+}, "forfragningar")
+
 onRecordAfterDeleteSuccess((e) => {
   e.next()
   if (e.record.getString("status") === "bekräftad") {
@@ -68,12 +79,24 @@ onRecordAfterDeleteSuccess((e) => {
   }
 }, "forfragningar")
 
+// Formuläret. ?datum=ÅÅÅÅ-MM-DD fyller i datumet, ?inbaddad=1 när det visas i
+// en ruta ovanpå kalendern på hemsidan.
+routerAdd("GET", "/{$}", (e) => {
+  const stod = require(`${__hooks}/stod.js`)
+  const q = e.request.url.query()
+  stod.tillatInbaddning(e)
+  return e.html(200, stod.formular(q.get("datum"), q.get("inbaddad") === "1"))
+})
+
 routerAdd("POST", "/boka", (e) => {
   const stod = require(`${__hooks}/stod.js`)
+  const inbaddad = e.request.formValue("inbaddad") === "1"
+  stod.tillatInbaddning(e)
+  const tillbaka = `<p><a href="/${inbaddad ? "?inbaddad=1" : ""}">Tillbaka till formuläret</a></p>`
   const fel = (text) => e.html(400, stod.sida("Förfrågan skickades inte",
-    `<p>${stod.esc(text)}</p><p><a href="/">Tillbaka till formuläret</a></p>`))
+    `<p>${stod.esc(text)}</p>${tillbaka}`, inbaddad))
   const tack = (text) => e.html(200, stod.sida("Tack!",
-    `<p>${stod.esc(text)}</p><p><a href="/">Tillbaka till formuläret</a></p>`))
+    `<p>${stod.esc(text)}</p>${tillbaka}`, inbaddad))
 
   // Dolt fält som bara automatiska skräpprogram fyller i.
   if (e.request.formValue("webbplats") !== "") {
@@ -89,6 +112,9 @@ routerAdd("POST", "/boka", (e) => {
   if (!namn || !epost || !datum || !syfte || !(antal > 0)) {
     return fel("Fyll i alla fält.")
   }
+  if (e.request.formValue("avtal") !== "ja") {
+    return fel("Du behöver läsa hyresavtalet och kryssa i att du godkänner det.")
+  }
 
   // Kontrollera att datumet finns och inte har passerat.
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(datum)
@@ -100,10 +126,16 @@ routerAdd("POST", "/boka", (e) => {
     return fel("Datumet har redan passerat.")
   }
 
-  const upptagen = $app.countRecords("forfragningar",
-    $dbx.hashExp({ datum: datum, status: "bekräftad" }))
-  if (upptagen > 0) {
-    return fel(`${stod.datumText(datum)} är redan bokat. Välj gärna ett annat datum.`)
+  // Tid: hel dag eller ett eller flera pass.
+  const mallar = require(`${__hooks}/mallar.js`)
+  const valdaPass = mallar.pass.map((p) => p.kod).filter((k) => e.request.formValue(`pass_${k}`) === "ja")
+  const omfattning = e.request.formValue("omfattning")
+  const tid = omfattning === "dag" ? ["dag"] : valdaPass
+  if (!tid.length) {
+    return fel("Välj hel dag eller minst ett pass.")
+  }
+  if (stod.krockar(tid, stod.upptaget(datum, ""))) {
+    return fel(`${stod.datumText(datum)}, ${stod.tidText(tid).toLowerCase()} är redan bokat. Välj gärna en annan tid.`)
   }
 
   const record = new Record($app.findCollectionByNameOrId("forfragningar"))
@@ -113,6 +145,9 @@ routerAdd("POST", "/boka", (e) => {
   record.set("antal", antal)
   record.set("syfte", syfte)
   record.set("status", "ny")
+  record.set("tid", tid)
+  record.set("medlem", e.request.formValue("medlem") === "ja")
+  record.set("avtal", require(`${__hooks}/mallar.js`).avtal.version)
 
   try {
     $app.save(record)
@@ -148,6 +183,8 @@ routerAdd("GET", "/beslut/{id}", (e) => {
   const l = stod.lage(rec)
   const fakta = `<dl class="fakta">
       <dt>Datum</dt><dd>${stod.esc(datum)}</dd>
+      <dt>Tid</dt><dd>${stod.esc(stod.tidText(stod.tidAv(rec)))}</dd>
+      <dt>Medlem</dt><dd>${rec.getBool("medlem") ? "Ja, vill ha medlemspris. Kontrollera." : "Nej"}</dd>
       <dt>Namn</dt><dd>${stod.esc(rec.getString("namn"))}</dd>
       <dt>E-post</dt><dd>${stod.esc(rec.getString("epost"))}</dd>
       <dt>Antal personer</dt><dd>${stod.esc(rec.getString("antal"))}</dd>
@@ -166,8 +203,8 @@ routerAdd("GET", "/beslut/{id}", (e) => {
 
   const mallar = require(`${__hooks}/mallar.js`)
   const lageText = l.bokad
-    ? `<p class="varning">${stod.esc(datum)} är redan bokat. Förfrågan kan inte godkännas.</p>`
-    : `<p class="notis">Dagen är ledig.${l.andraNya.length ? ` ${l.andraNya.length} till har frågat om samma dag.` : ""}</p>`
+    ? `<p class="varning">Tiden är redan bokad. Förfrågan kan inte godkännas.</p>`
+    : `<p class="notis">Tiden är ledig.${l.andraNya.length ? ` ${l.andraNya.length} till har frågat om samma tid.` : ""}</p>`
 
   const val = e.request.url.query().get("val")
   const formular = (v) => {
@@ -231,7 +268,7 @@ routerAdd("POST", "/beslut/{id}", (e) => {
   try {
     $app.save(rec)
   } catch (err) {
-    return svar(409, "Kunde inte godkännas", `${stod.esc(datum)} är redan bokat för någon annan. Avböj förfrågan i stället.`)
+    return svar(409, "Kunde inte godkännas", `Tiden ${stod.esc(datum)} är redan bokad för någon annan. Avböj förfrågan i stället.`)
   }
 
   const skickat = stod.mejlTillHyresgast(rec, val === "godkann" ? "godkand" : "avbojd")
@@ -250,18 +287,12 @@ routerAdd("POST", "/beslut/{id}", (e) => {
 
   const l = stod.lage(rec)
   if (val === "godkann" && l.andraNya.length) {
-    text += `</p><p class="varning">${l.andraNya.length} till har frågat om samma dag. De behöver avböjas:</p><ul>` +
+    text += `</p><p class="varning">${l.andraNya.length} till har frågat om samma tid. De behöver avböjas:</p><ul>` +
       l.andraNya.map((r) => `<li><a href="${stod.esc(stod.lank(r, "avboj"))}">${stod.esc(r.getString("namn"))}</a></li>`).join("") +
       "</ul><p>"
   }
   return svar(200, "Klart", text)
 })
-
-// Förhandsvisning av kalendern under provet: pb_data/forhandsvisning/hyr.html,
-// med hemsidans stil och bilder. Den riktiga hyr.html ändras inte.
-routerAdd("GET", "/forhandsvisning/css/{path...}", $apis.static(`${__hooks}/../../css`, false))
-routerAdd("GET", "/forhandsvisning/bilder/{path...}", $apis.static(`${__hooks}/../../bilder`, false))
-routerAdd("GET", "/forhandsvisning/{path...}", $apis.static(`${__hooks}/../pb_data/forhandsvisning`, false))
 
 // Påminnelse till bokningsansvariga om förfrågningar som ingen har svarat på.
 cronAdd("bokning_paminnelse", $os.getenv("BOKNING_PAMINN_SCHEMA") || "0 8 * * *", () => {
@@ -278,4 +309,9 @@ cronAdd("bokning_paminnelse", $os.getenv("BOKNING_PAMINN_SCHEMA") || "0 8 * * *"
       $app.save(rec)
     }
   }
+})
+
+// Kalendern uppdateras också varje timme, så att den följer med när en ny månad börjar.
+cronAdd("bokning_kalender", "0 * * * *", () => {
+  require(`${__hooks}/stod.js`).uppdateraKalender()
 })
