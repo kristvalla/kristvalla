@@ -25,17 +25,16 @@ innehållet.
 Hemsidan behålls, eftersom den är föreningens egen och går att flytta. Den fungerar även om
 Asamla ligger nere: den som vill hyra kan alltid mejla.
 
-## Länk, och inbäddning först efter ett klick
+## Inbäddning först efter ett klick
 
 En inbäddad ruta som laddas direkt skulle kontakta Asamla redan när besökaren öppnar *Hyr
 bygdegården*. Då får Asamla veta vem som besöker föreningens sida. Det strider mot reglerna i
-[AGENTS.md](../../AGENTS.md). Därför gäller:
+[AGENTS.md](../../AGENTS.md). Därför gäller (ändrat 2026-11-23, bara inbäddning, ingen separat länk):
 
-- Varje bokningsalternativ är en **vanlig länk** till Asamlas egen sida. Det fungerar utan
-  JavaScript.
-- Med JavaScript finns också en **knapp som visar bokningen på sidan**. Rutan hämtas från Asamla
-  först när besökaren trycker på knappen, och sidan säger då att Asamla ser besökarens
+- Varje bokningsalternativ har **en knapp** som visar bokningen på sidan. Rutan hämtas från
+  Asamla först när besökaren trycker på knappen, och sidan säger då att Asamla ser besökarens
   IP-adress. Koden finns i [js/boka.js](../../js/boka.js).
+- Utan JavaScript visas en text som hänvisar till e-post.
 - Vi använder inte Asamlas eget skript `embed.js`. `js/boka.js` gör samma sak, att ändra rutans
   höjd, och godtar bara svar från Asamla.
 

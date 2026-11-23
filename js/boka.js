@@ -1,7 +1,7 @@
 // Bokningen från Asamla på sidan Hyr bygdegården.
 //
-// Utan JavaScript är bokningen en vanlig länk som öppnar Asamlas egen sida.
-// Med JavaScript får besökaren också en knapp som visar bokningen här på sidan.
+// Bokningen visas bara här på sidan. Besökaren trycker på en knapp för att visa den.
+// Utan JavaScript hänvisas besökaren till e-post.
 // Bokningen hämtas från Asamla först när besökaren trycker på knappen. Då får
 // Asamla inte veta att någon har öppnat vår sida bara för att den laddas, se
 // docs/beslut/bokning-via-asamla.md.
@@ -14,18 +14,15 @@
       // Bara adresser till Asamlas inbäddning accepteras.
       if (!adress || adress.indexOf(ASAMLA + "/embed/") !== 0) return;
 
-      var lank = rad.querySelector("a.knapp");
-      if (lank) lank.classList.add("ljus");
-
       var knapp = document.createElement("button");
       knapp.type = "button";
       knapp.className = "knapp";
-      knapp.textContent = "Visa bokningen här på sidan";
+      knapp.textContent = "Se lediga dagar och boka";
 
       var notis = document.createElement("p");
       notis.className = "boka-notis";
       notis.textContent = "När du trycker hämtas bokningen från Asamla. Asamla kan då se din " +
-        "IP-adress. Vill du inte det, öppna Asamlas sida med den andra knappen.";
+        "IP-adress. Vill du inte det, mejla oss i stället.";
 
       rad.insertBefore(notis, rad.firstChild);
       rad.insertBefore(knapp, rad.firstChild);
