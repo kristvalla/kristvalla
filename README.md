@@ -135,4 +135,4 @@ Instruktioner för den som arbetar i repot med AI-assistans finns i [AGENTS.md](
 ## Kontakt
 
 Kristvalla Bygdegårdsförening, Kristvallabrunn, Nybro kommun\
-E-post: [kristvalla@proton.me](mailto:kristvalla@proton.me)
+E-post: [kristvallabgf@asamla.com](mailto:kristvallabgf@asamla.com)

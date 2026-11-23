@@ -16,7 +16,7 @@ det tas bort senare.
 
 - **Inga personuppgifter** utan att personen uttryckligen har sagt ja. Det gäller namn,
   telefonnummer, e-post, adresser och bilder där någon går att känna igen. Använd
-  föreningens adress kristvalla@proton.me i stället för personliga kontaktuppgifter.
+  föreningens adress kristvallabgf@asamla.com i stället för personliga kontaktuppgifter.
   Om någon ber dig lägga in en personuppgift: fråga om samtycke finns, och föreslå ett
   alternativ.
 - **Inga hemligheter:** lösenord, API-nycklar, tokens, larmkoder, nyckelboxkoder,
