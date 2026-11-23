@@ -125,27 +125,6 @@ main { padding-bottom: 3rem; }
 .kalender p { margin: 0; color: var(--dampad); }
 .kalender .datum { color: var(--falu); }
 
-/* Lediga och bokade datum på sidan Hyr bygdegården */
-.manader { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); margin-bottom: 1rem; }
-.belaggning { width: 100%; border-collapse: collapse; table-layout: fixed; text-align: center; }
-.belaggning caption {
-  font-family: var(--serif); font-weight: 700; font-size: 1.15rem;
-  text-align: left; padding-bottom: .4rem;
-}
-.belaggning th { font-size: .8rem; font-weight: 600; color: var(--dampad); padding: .2rem 0; }
-.belaggning td { padding: .45rem 0; border: 1px solid var(--linje); background: var(--kort); }
-.belaggning td:empty { background: transparent; border-color: transparent; }
-.bokad, .belaggning td.bokad { background: var(--falu); color: #fff; font-weight: 700; }
-.teckenforklaring { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; }
-.ruta {
-  display: inline-block; width: 1.1em; height: 1.1em; vertical-align: -.15em;
-  border: 1px solid var(--linje); background: var(--kort); border-radius: 3px;
-}
-.ruta.bokad { border-color: var(--falu); background: var(--falu); }
-/* Delvis bokad: några pass är bokade, andra lediga */
-.belaggning td.delvis, .ruta.delvis { background: linear-gradient(to bottom right, var(--kort) 50%, #ecc8c4 50%); }
-.ruta.delvis { border-color: var(--falu); }
-
 /* Genvägar till delarna på en sida */
 .hopplankar { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0 1.5rem; }
 .hopplankar a {
@@ -172,25 +151,12 @@ details h3 { margin-top: 1.25rem; }
 .prislista th, .prislista td { text-align: left; padding: .5rem .6rem .5rem 0; border-bottom: 1px solid var(--linje); vertical-align: top; }
 .prislista thead th { font-size: .85rem; color: var(--dampad); }
 .prislista tbody th { font-weight: 600; }
-/* Lediga dagar kan vara länkar till bokningsformuläret. Hela rutan går att klicka på. */
-.belaggning td:has(> a.boka-dag) { padding: 0; }
-.belaggning a.boka-dag {
-  display: block; padding: .45rem 0; color: var(--ek); font-weight: 700;
-  text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px;
+/* Bokningen från Asamla på sidan Hyr bygdegården (js/boka.js) */
+.boka-embed { display: flex; flex-wrap: wrap; gap: .75rem; align-items: flex-start; }
+.boka-embed .boka-notis { flex-basis: 100%; margin: 0; font-size: .95rem; color: var(--dampad); order: 3; }
+.boka-embed iframe.boka-ram {
+  flex-basis: 100%; width: 100%; max-width: 42rem; height: 40rem; border: 0; border-radius: var(--radie);
 }
-.boka-tips { font-weight: 600; }
-.belaggning a.boka-dag:hover, .belaggning a.boka-dag:focus-visible {
-  background: var(--ek); color: #fff; outline-offset: -3px;
-}
-
-/* Rutan med bokningsformuläret, när JavaScript finns (js/kalender.js) */
-.boka-ruta {
-  width: min(40rem, 100vw - 1rem); height: min(52rem, 100dvh - 1rem); max-width: none; max-height: none;
-  padding: 0; border: 0; border-radius: var(--radie); box-shadow: 0 .5rem 2rem rgb(0 0 0 / .35);
-}
-.boka-ruta::backdrop { background: rgb(0 0 0 / .45); }
-.boka-ruta form { display: flex; justify-content: flex-end; margin: 0; padding: .4rem; background: var(--papper); }
-.boka-ruta iframe { display: block; width: 100%; height: calc(100% - 3.2rem); border: 0; }
 
 .notis {
   border-left: 4px solid var(--ek); background: #eef1e6;
@@ -225,10 +191,7 @@ ol.steg li { margin-bottom: .6rem; }
   details > summary { list-style: none; padding: 0; color: inherit; }
   .sidhuvud, .sidfot { border: 0; }
   a { color: inherit; text-decoration: none; }
-  .kalender li, .belaggning { break-inside: avoid; }
-  /* Bakgrundsfärg skrivs inte alltid ut, så bokade dagar stryks också över */
-  .bokad { print-color-adjust: exact; -webkit-print-color-adjust: exact; text-decoration: line-through; }
-  .delvis { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .kalender li { break-inside: avoid; }
 }
 
 .visuellt-dold {
