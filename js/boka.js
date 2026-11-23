@@ -1,10 +1,8 @@
 // Bokningen från Asamla på sidan Hyr bygdegården.
 //
-// Bokningen visas bara här på sidan. Besökaren trycker på en knapp för att visa den.
-// Utan JavaScript hänvisas besökaren till e-post.
-// Bokningen hämtas från Asamla först när besökaren trycker på knappen. Då får
-// Asamla inte veta att någon har öppnat vår sida bara för att den laddas, se
-// docs/beslut/bokning-via-asamla.md.
+// Bokningen från Asamla visas inbäddad på sidan. Asamla är föreningens system och kan se
+// besökarens IP-adress, vilket sidan säger. Utan JavaScript hänvisas besökaren till e-post.
+// Se docs/beslut/bokning-via-asamla.md.
 (function () {
   var ASAMLA = "https://www.asamla.se";
 
@@ -14,29 +12,11 @@
       // Bara adresser till Asamlas inbäddning accepteras.
       if (!adress || adress.indexOf(ASAMLA + "/embed/") !== 0) return;
 
-      var knapp = document.createElement("button");
-      knapp.type = "button";
-      knapp.className = "knapp";
-      knapp.textContent = "Se lediga dagar och boka";
-
-      var notis = document.createElement("p");
-      notis.className = "boka-notis";
-      notis.textContent = "När du trycker hämtas bokningen från Asamla. Asamla kan då se din " +
-        "IP-adress. Vill du inte det, mejla oss i stället.";
-
-      rad.insertBefore(notis, rad.firstChild);
-      rad.insertBefore(knapp, rad.firstChild);
-
-      knapp.addEventListener("click", function () {
-        var ram = document.createElement("iframe");
-        ram.className = "boka-ram";
-        ram.title = rad.getAttribute("data-titel") || "Bokning";
-        ram.src = adress;
-        rad.insertBefore(ram, rad.firstChild);
-        knapp.remove();
-        notis.remove();
-        ram.focus();
-      });
+      var ram = document.createElement("iframe");
+      ram.className = "boka-ram";
+      ram.title = rad.getAttribute("data-titel") || "Bokning";
+      ram.src = adress;
+      rad.insertBefore(ram, rad.firstChild);
     });
   });
 

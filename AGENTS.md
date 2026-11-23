@@ -37,6 +37,13 @@ det tas bort senare.
 - **Inga externa resurser som avslöjar besökaren.** Typsnitt, skript och bilder ska ligga på
   sidan själv, inte hämtas från t.ex. Google Fonts eller ett CDN. Det är både en GDPR-fråga och
   en driftsäkerhetsfråga.
+- **Det enda undantaget är Asamla** (asamla.se), föreningens system för medlemsregister, bokning
+  och administration, som föreningen har valt (styrelsebeslut 2026-11-22, § 8.1). Sidan får
+  visa bokning och medlemsanmälan från Asamla, och länka dit. Asamla får ingenting annat än det
+  som en visning av rutan kräver. Inga andra tredjepartstjänster får laddas.
+  Texten på sidan ska säga det så här: *"Bokningen och medlemsanmälan visas av Asamla, som är
+  föreningens system för medlemmar och bokning. När rutan visas kan Asamla se din IP-adress,
+  på samma sätt som när du besöker Asamlas egen webbplats."*
 - **Formulär samlar bara in det som behövs**, och varje formulär ska ha en kort text om vad
   uppgifterna används till och hur länge de sparas.
 

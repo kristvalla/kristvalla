@@ -36,7 +36,8 @@ ansvarar för innehållet.
 6. **Ska gå att ärva.** Fler än en person kan sköta sidan, och allt är dokumenterat här.
 7. **Öppen källkod.** Andra bygdegårdar ska kunna kopiera upplägget.
 8. **Besökarnas integritet.** Ingen spårning, inga annonser och inga tredjepartstjänster som
-   samlar in uppgifter om den som läser.
+   samlar in uppgifter om den som läser. Undantaget är Asamla, föreningens system för medlemmar
+   och bokning, se [AGENTS.md](AGENTS.md).
 
 ## Hur sidan är tänkt att byggas
 
