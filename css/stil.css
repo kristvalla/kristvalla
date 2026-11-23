@@ -11,7 +11,8 @@
   --ek: #3f5a2c;          /* ekbladen i loggan */
   --linje: #d9d3c2;
   --radie: 10px;
-  --bredd: 44rem;
+  --bredd: 70rem;
+  --las: 42rem;           /* längsta rad i löpande text */
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
@@ -40,15 +41,18 @@ a:focus-visible, button:focus-visible {
 
 h1, h2, h3 {
   font-family: var(--serif);
-  line-height: 1.2;
-  color: var(--falu);
+  line-height: 1.15;
+  color: var(--text);
   margin: 0 0 .5em;
 }
-h1 { font-size: 2.1rem; }
-h2 { font-size: 1.5rem; margin-top: 2rem; }
-h3 { font-size: 1.15rem; color: var(--text); }
+h1 { font-size: 2.6rem; letter-spacing: -.01em; }
+h2 { font-size: 1.7rem; margin-top: 3.25rem; padding-top: 1.1rem; border-top: 1px solid var(--linje); }
+h3 { font-size: 1.15rem; }
 
 p { margin: 0 0 1em; }
+
+/* Löpande text får korta rader även när sidan är bred */
+:where(main) :is(p, ul, ol, dl.fakta) { max-width: var(--las); }
 
 .hoppa {
   position: absolute; left: -999px; top: 0;
@@ -70,9 +74,11 @@ p { margin: 0 0 1em; }
   gap: .75rem 1.5rem; padding-top: .9rem; padding-bottom: .9rem;
 }
 .namn {
+  display: flex; align-items: center; gap: .8rem;
   font-family: var(--serif); font-size: 1.2rem; font-weight: 700;
   color: var(--falu); text-decoration: none; line-height: 1.2;
 }
+.logga { height: 3.2rem; width: auto; flex: none; border-radius: 6px; }
 .namn small {
   display: block; font-family: var(--sans); font-weight: 400;
   font-size: .8rem; color: var(--dampad); letter-spacing: .02em;
@@ -82,13 +88,24 @@ p { margin: 0 0 1em; }
 .meny a:hover { color: var(--falu); }
 .meny a[aria-current="page"] { color: var(--falu); border-bottom-color: var(--falu); }
 
-/* Startsidans topp */
-.topp { text-align: center; padding: 2rem 0 1rem; }
-.topp img { width: min(100%, 420px); }
-.ingress { font-size: 1.15rem; max-width: 36rem; margin: 1rem auto 0; }
+/* Inledning: samma uppbyggnad överst på alla sidor.
+   Startsidan använder .hero, övriga sidor .sida-topp. Bild är valfri (.med-bild). */
+.hero, .sida-topp { padding: 3rem 0 .5rem; }
+.hero { padding-top: 3.5rem; }
+.hero h1 { font-size: 3.2rem; max-width: 14ch; }
+.avsandare {
+  margin: 0 0 .6rem; font-size: .85rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .1em; color: var(--falu);
+}
+.ingress { font-size: 1.25rem; line-height: 1.5; max-width: 38rem; margin: 0 0 1.25rem; }
+.hero-bild img, .sida-topp-bild img { display: block; width: 100%; border-radius: var(--radie); }
+@media (min-width: 52rem) {
+  .hero.med-bild, .sida-topp.med-bild {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+  }
+}
 
-main { padding-bottom: 3rem; }
-.sida-topp { padding-top: 2rem; }
+main { padding-bottom: 4rem; }
 
 /* Knappar och kort */
 .knapp {
@@ -97,7 +114,7 @@ main { padding-bottom: 3rem; }
   text-decoration: none; font-weight: 600;
 }
 .knapp:hover { background: var(--falu-mork); color: #fff; }
-.knapp-rad { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: center; margin: 1.5rem 0 0; }
+.knapp-rad { display: flex; flex-wrap: wrap; gap: .75rem; justify-content: flex-start; margin: 1.5rem 0 0; }
 .knapp.ljus { background: transparent; color: var(--falu); border: 2px solid var(--falu); }
 .knapp.ljus:hover { background: var(--falu); color: #fff; }
 
@@ -106,13 +123,18 @@ main { padding-bottom: 3rem; }
   border-radius: var(--radie); padding: 1.1rem 1.25rem; margin: 0 0 1rem;
 }
 
-.genvagar { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); }
-.genvagar .kort { margin: 0; }
-.genvagar h3 { color: var(--falu); }
+.genvagar { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
+.genvagar .kort {
+  margin: 0; padding: .9rem 0 0; background: none; border: 0;
+  border-top: 3px solid var(--falu); border-radius: 0;
+}
+.genvagar h3 { font-size: 1.3rem; }
+.genvagar h3 a { color: var(--text); text-decoration: none; }
+.genvagar h3 a:hover { color: var(--falu); text-decoration: underline; }
 .genvagar p:last-child { margin: 0; }
 
 /* Kalendern */
-.kalender { list-style: none; margin: 0; padding: 0; }
+.kalender { list-style: none; margin: 0; padding: 0; max-width: 46rem; }
 .kalender li {
   display: grid; grid-template-columns: 5.5rem 1fr; gap: 1rem;
   padding: .9rem 0; border-bottom: 1px solid var(--linje);
@@ -151,11 +173,30 @@ details h3 { margin-top: 1.25rem; }
 .prislista th, .prislista td { text-align: left; padding: .5rem .6rem .5rem 0; border-bottom: 1px solid var(--linje); vertical-align: top; }
 .prislista thead th { font-size: .85rem; color: var(--dampad); }
 .prislista tbody th { font-weight: 600; }
-/* Bokningen från Asamla på sidan Hyr bygdegården (js/boka.js) */
-.boka-embed { display: flex; flex-wrap: wrap; gap: .75rem; align-items: flex-start; }
-.boka-embed .boka-notis { flex-basis: 100%; margin: 0; font-size: .95rem; color: var(--dampad); order: 3; }
-.boka-embed iframe.boka-ram {
-  flex-basis: 100%; width: 100%; max-width: 42rem; height: 40rem; border: 0; border-radius: var(--radie);
+/* Val av hyresalternativ och en gemensam bokningsyta (js/boka.js) */
+.val-lista {
+  list-style: none; margin: 1.25rem 0 0; padding: 0; max-width: none;
+  display: grid; gap: .9rem; grid-template-columns: 1fr;
+}
+@media (min-width: 48rem) { .val-lista { grid-template-columns: repeat(3, 1fr); } }
+.val-lista li { margin: 0; display: flex; }
+.val-lista li > .val { flex: 1; }
+.val, .val-lista li:not(:has(> .val)) {
+  display: flex; flex-direction: column; gap: .15rem; text-align: left; width: 100%;
+  font: inherit; color: var(--text);
+  padding: 1rem 1.15rem; background: var(--kort);
+  border: 2px solid var(--linje); border-radius: var(--radie);
+}
+.val { cursor: pointer; }
+.val:hover { border-color: var(--falu); }
+.val[aria-pressed="true"] { border-color: var(--falu); background: #f7ebe8; box-shadow: inset 0 -4px 0 var(--falu); }
+.val-namn { font-family: var(--serif); font-size: 1.25rem; font-weight: 700; }
+.val[aria-pressed="true"] .val-namn { color: var(--falu); }
+.val-tid { color: var(--dampad); font-size: .95rem; }
+.val-pris { margin-top: .4rem; font-weight: 600; }
+.boka-yta { margin-top: 1.5rem; }
+.boka-yta iframe.boka-ram {
+  display: block; width: 100%; max-width: 50rem; height: 40rem; border: 0; border-radius: var(--radie);
 }
 
 .notis {
@@ -175,8 +216,12 @@ ol.steg li { margin-bottom: .6rem; }
 .sidfot { border-top: 1px solid var(--linje); color: var(--dampad); font-size: .9rem; padding: 1.5rem 0 2.5rem; }
 .sidfot p { margin: 0 0 .3rem; }
 
+@media (max-width: 40rem) {
+  h1 { font-size: 2.1rem; }
+  .hero h1 { font-size: 2.4rem; }
+  h2 { margin-top: 2.5rem; }
+}
 @media (max-width: 30rem) {
-  h1 { font-size: 1.75rem; }
   .kalender li { grid-template-columns: 4.25rem 1fr; gap: .75rem; }
   dl.fakta { grid-template-columns: 1fr; }
   dl.fakta dd { margin-bottom: .5rem; }
@@ -186,7 +231,7 @@ ol.steg li { margin-bottom: .6rem; }
 @media print {
   html { font-size: 12pt; }
   body { background: #fff; }
-  .utkast, .meny, .knapp-rad, .hoppa, .genvagar, .hopplankar { display: none; }
+  .utkast, .meny, .knapp-rad, .hoppa, .genvagar, .hopplankar, .val-lista, .boka-yta { display: none; }
   details { border: 0; }
   details > summary { list-style: none; padding: 0; color: inherit; }
   .sidhuvud, .sidfot { border: 0; }
