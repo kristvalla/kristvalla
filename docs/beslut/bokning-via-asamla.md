@@ -30,7 +30,7 @@ Asamla ligger nere: den som vill hyra kan alltid mejla.
 Bokningen visas inbäddad direkt på *Hyr bygdegården* (ändrat 2026-11-23). Asamla kan då se
 besökarens IP-adress. Det är godtaget, eftersom Asamla är föreningens leverantör för medlemsregister
 och bokning. Undantaget står i [AGENTS.md](../../AGENTS.md), och sidan säger det med
-standardtexten där. ⚠️ Förutsätter personuppgiftsbiträdesavtal med Asamla, se nedan.
+standardtexten där. Det finns ett personuppgiftsbiträdesavtal, se nedan.
 
 - Varje bokningsalternativ visas som en ruta. Koden finns i [js/boka.js](../../js/boka.js).
 - Utan JavaScript visas en text som hänvisar till e-post.
@@ -47,8 +47,12 @@ www.asamla.se.
   öppna utan konto, och Asamla säger att föreningen godkänner bokningen innan den gäller.
   ⚠️ verifiera med en provbokning: att förfrågan går fram, att föreningen får den, godkännande,
   svar till den som bokar och att en redan bokad tid inte går att boka igen.
-- ⚠️ verifiera var Asamla lagrar uppgifterna (inom EU?), och att det finns ett
-  personuppgiftsbiträdesavtal.
+- Personuppgiftsbiträdesavtal: Asamlas standardavtal, version 2026-11-12, gäller mellan föreningen
+  (personuppgiftsansvarig) och Asamla AB (biträde), enligt
+  https://www.asamla.se/personuppgiftsbitradesavtal, läst 2026-11-23. Databas, filer och
+  säkerhetskopior finns i Stockholm. Några underbiträden finns i USA under EU–US Data Privacy
+  Framework. Efter uppsägning kan föreningen ladda ner sina uppgifter inom 30 dagar.
+  ⚠️ Kontrollera att styrelsen har godkänt avtalet i kontot, om Asamla kräver det.
 - ⚠️ verifiera vad bokning kostar i Asamla, och vad gratisnivån innehåller.
 - ⚠️ verifiera att uppgifterna går att exportera, så att föreningen kan byta lösning.
 - Kontot ska tillhöra föreningen, och minst två personer ska ha åtkomst.
