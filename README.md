@@ -45,7 +45,7 @@ Sidan delas i två delar, så att det viktigaste alltid fungerar:
 | Del | Innehåll | Om den går ner |
 |---|---|---|
 | **Statisk sida** | Startsida, kalender, fasta sidor | Händer i praktiken inte |
-| **Bokning i Asamla** | Lediga dagar och bokningsförfrågan. Sidan länkar dit | Den som vill hyra mejlar föreningen |
+| **Bokning i Asamla** | Lediga dagar och bokningsförfrågan. Sidan länkar dit och kan visa bokningen när besökaren trycker på en knapp | Den som vill hyra mejlar föreningen |
 | **Tjänst** (senare) | Inloggning för föreningen, redigering, nyhetsbrev | Sidan visar den senaste kalendern |
 
 Bokningen sköts i Asamla sedan 2026-11-23, se

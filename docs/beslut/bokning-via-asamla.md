@@ -25,17 +25,30 @@ innehållet.
 Hemsidan behålls, eftersom den är föreningens egen och går att flytta. Den fungerar även om
 Asamla ligger nere: den som vill hyra kan alltid mejla.
 
-## Länk, inte inbäddning
+## Länk, och inbäddning först efter ett klick
 
-Sidan länkar till Asamla och bäddar inte in Asamla i sidan. En inbäddad ruta laddar Asamlas sida
-redan när besökaren öppnar *Hyr bygdegården*. Då får Asamla veta vem som besöker föreningens sida,
-och det kan sättas cookies. Det strider mot reglerna i [AGENTS.md](../../AGENTS.md). Med en länk
-kontaktas Asamla först när besökaren själv väljer att boka.
+En inbäddad ruta som laddas direkt skulle kontakta Asamla redan när besökaren öppnar *Hyr
+bygdegården*. Då får Asamla veta vem som besöker föreningens sida. Det strider mot reglerna i
+[AGENTS.md](../../AGENTS.md). Därför gäller:
+
+- Varje bokningsalternativ är en **vanlig länk** till Asamlas egen sida. Det fungerar utan
+  JavaScript.
+- Med JavaScript finns också en **knapp som visar bokningen på sidan**. Rutan hämtas från Asamla
+  först när besökaren trycker på knappen, och sidan säger då att Asamla ser besökarens
+  IP-adress. Koden finns i [js/boka.js](../../js/boka.js).
+- Vi använder inte Asamlas eget skript `embed.js`. `js/boka.js` gör samma sak, att ändra rutans
+  höjd, och godtar bara svar från Asamla.
+
+Provat 2026-11-23: bokningssidorna går att öppna utan konto, och Asamla tillåter inbäddning på
+andra sidor. Rutan gav inga cookies och ingen lagring i webbläsaren, och inga anrop till andra än
+www.asamla.se.
 
 ## Att ta reda på
 
-- ⚠️ verifiera att Asamlas bokning räcker: lediga dagar, hel dag och pass, godkännande av
-  föreningen, svar till den som bokar.
+- Provat 2026-11-23: de tre alternativen (vardag kväll, heldag lördag eller söndag, helg) går att
+  öppna utan konto, och Asamla säger att föreningen godkänner bokningen innan den gäller.
+  ⚠️ verifiera med en provbokning: att förfrågan går fram, att föreningen får den, godkännande,
+  svar till den som bokar och att en redan bokad tid inte går att boka igen.
 - ⚠️ verifiera var Asamla lagrar uppgifterna (inom EU?), och att det finns ett
   personuppgiftsbiträdesavtal.
 - ⚠️ verifiera vad bokning kostar i Asamla, och vad gratisnivån innehåller.
@@ -48,4 +61,5 @@ kontaktas Asamla först när besökaren själv väljer att boka.
 - *Hyr bygdegården* har en knapp till bokningen i Asamla. Knappen för e-post finns kvar.
 - Kalendern med bokade dagar på sidan tas bort. Lediga dagar visas i Asamla, så att ingen behöver
   uppdatera två kalendrar.
-- Adressen till bokningen är en platshållare tills den är känd: ⚠️ [länk till bokningen i Asamla].
+- Länkarna till de tre bokningsalternativen är inlagda. Priserna kommer från beskrivningarna i
+  Asamla, 2026-11-23. ⚠️ verifiera mot det undertecknade protokollet.
