@@ -40,53 +40,26 @@
     </nav>
 
     <h2 id="lediga">Lediga dagar</h2>
-    <p class="notis">Bokningarna nedan är exempel i utkastet.</p>
-    <!-- Så uppdaterar du kalendern:
-         - En dag som blir bokad: ändra <td>7</td> till
-           <td class="bokad">7<span class="visuellt-dold"> bokad</span></td>
-         - En bokning som ställs in: ändra tillbaka till <td>7</td>.
-         - Ny månad: kopiera en hel <table> och ändra rubriken och datumen.
-           Ta bort månader som har passerat.
-         - Ändra datumet för senaste uppdateringen.
-         Visa bara att dagen är bokad, aldrig vem som har bokat. -->
-    <p class="teckenforklaring" aria-hidden="true">
-      <span><span class="ruta"></span> Ledig</span>
-      <span><span class="ruta delvis"></span> Delvis bokad</span>
-      <span><span class="ruta bokad"></span> Bokad</span>
-    </p>
-    <div class="manader">
-      <table class="belaggning">
-        <caption>November 2026</caption>
-        <thead><tr><th scope="col" abbr="måndag">mån</th><th scope="col" abbr="tisdag">tis</th><th scope="col" abbr="onsdag">ons</th><th scope="col" abbr="torsdag">tor</th><th scope="col" abbr="fredag">fre</th><th scope="col" abbr="lördag">lör</th><th scope="col" abbr="söndag">sön</th></tr></thead>
-        <tbody>
-          <tr><td></td><td></td><td></td><td></td><td></td><td></td><td>1</td></tr>
-          <tr><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td class="bokad">7<span class="visuellt-dold"> bokad</span></td><td>8</td></tr>
-          <tr><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td class="bokad">14<span class="visuellt-dold"> bokad</span></td><td>15</td></tr>
-          <tr><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td class="bokad">21<span class="visuellt-dold"> bokad</span></td><td>22</td></tr>
-          <tr><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td class="bokad">28<span class="visuellt-dold"> bokad</span></td><td>29</td></tr>
-          <tr><td>30</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-        </tbody>
-      </table>
-      <table class="belaggning">
-        <caption>December 2026</caption>
-        <thead><tr><th scope="col" abbr="måndag">mån</th><th scope="col" abbr="tisdag">tis</th><th scope="col" abbr="onsdag">ons</th><th scope="col" abbr="torsdag">tor</th><th scope="col" abbr="fredag">fre</th><th scope="col" abbr="lördag">lör</th><th scope="col" abbr="söndag">sön</th></tr></thead>
-        <tbody>
-          <tr><td></td><td>1</td><td>2</td><td>3</td><td>4</td><td class="bokad">5<span class="visuellt-dold"> bokad</span></td><td>6</td></tr>
-          <tr><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td class="bokad">12<span class="visuellt-dold"> bokad</span></td><td>13</td></tr>
-          <tr><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td class="bokad">19<span class="visuellt-dold"> bokad</span></td><td>20</td></tr>
-          <tr><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td></tr>
-          <tr><td>28</td><td>29</td><td>30</td><td class="bokad">31<span class="visuellt-dold"> bokad</span></td><td></td><td></td><td></td></tr>
-        </tbody>
-      </table>
+    <p>Lediga dagar ser du i vår bokning hos Asamla. Där skickar du också din förfrågan.</p>
+    <div class="knapp-rad vanster">
+      <!-- Byt href="#" mot länken till föreningens bokning i Asamla. -->
+      <a class="knapp" href="#">Se lediga dagar och boka</a>
     </div>
-    <p>Kalendern uppdateras av föreningen när en bokning är bekräftad. Senast uppdaterad:
-      <span class="platshallare">[datum]</span>. En ledig dag kan ha hunnit bokas, så skicka
-      gärna en förfrågan även om dagen ser ledig ut.</p>
+    <p><span class="platshallare">[Länk till bokningen i Asamla saknas än.]</span>
+      Bokningen öppnas på Asamlas webbplats. Vill du hellre mejla går det också bra, se
+      <a href="#boka">Så bokar du</a>.</p>
 
     <h2 id="pris">Pris</h2>
-    <p>Ett pass från <span class="platshallare">[kr]</span>, hel dag från
-      <span class="platshallare">[kr]</span>. <strong>Medlemmar hyr billigare</strong>,
-      <a href="medlem.html">bli medlem</a>.</p>
+    <p>Styrelsen har beslutat om dessa nivåer för 2026/2027:</p>
+    <ul>
+      <li>Vardag kväll: 500 kr</li>
+      <li>Helgdag: 800 kr</li>
+      <li>Helgpris: 1 500 kr</li>
+    </ul>
+    <p><strong>Medlemmar får 10 % rabatt</strong>, <a href="medlem.html">bli medlem</a>.</p>
+    <p><span class="platshallare">[Vad som är pris per kväll respektive per dygn, och vilka dagar som
+      räknas som helgdag och helgpris, står inte i beslutet. Förtydliga innan sidan publiceras.
+      Kontrollera också mot det undertecknade protokollet, § 10.6.]</span></p>
     <details id="tider">
       <summary>Hela prislistan och tiderna</summary>
       <div class="tabell">
@@ -127,10 +100,10 @@
       <p>Tiden räknas från att du kommer tills lokalen är städad och låst.</p>
     </details>
 
-    <h2>Så bokar du</h2>
+    <h2 id="boka">Så bokar du</h2>
     <ol class="steg">
-      <li><strong>Skicka en förfrågan</strong> med knappen nedan. Skriv datum, tid, ungefär hur
-        många ni blir och vad det gäller.</li>
+      <li><strong>Skicka en förfrågan</strong> i bokningen hos Asamla, eller mejla oss. Skriv
+        datum, tid, ungefär hur många ni blir och vad det gäller.</li>
       <li><strong>Vi bekräftar</strong> via e-post.</li>
       <li><strong>Betala med Swish i förskott</strong> till
         <span class="platshallare">[föreningens Swish-nummer]</span>, senast
@@ -138,7 +111,9 @@
       <li><strong>Hämta nyckeln</strong> enligt överenskommelse, och städa när ni går.</li>
     </ol>
     <div class="knapp-rad vanster">
-      <a class="knapp" href="mailto:kristvalla@proton.me?subject=Bokningsf%C3%B6rfr%C3%A5gan&amp;body=Datum%3A%20%0AAntal%20personer%3A%20%0AVad%20g%C3%A4ller%20det%3A%20%0A">Skicka en bokningsförfrågan</a>
+      <!-- Byt href="#" mot länken till föreningens bokning i Asamla. -->
+      <a class="knapp" href="#">Boka hos Asamla</a>
+      <a class="knapp ljus" href="mailto:kristvalla@proton.me?subject=Bokningsf%C3%B6rfr%C3%A5gan&amp;body=Datum%3A%20%0AAntal%20personer%3A%20%0AVad%20g%C3%A4ller%20det%3A%20%0A">Mejla en förfrågan</a>
     </div>
 
     <details id="lokalen">
@@ -176,7 +151,8 @@
     </details>
 
     <p class="notis">Vi använder dina kontaktuppgifter bara för att hantera bokningen.
-      <span class="platshallare">[Hur länge de sparas, enligt föreningens rutin.]</span></p>
+      <span class="platshallare">[Hur länge de sparas, enligt föreningens rutin.]</span>
+      Bokar du hos Asamla sparas uppgifterna där, för föreningens räkning.</p>
   </main>
 
   <footer class="sidfot">
@@ -186,7 +162,6 @@
       <p>Sidan har inga cookies och samlar inte in uppgifter om dig som besöker den.</p>
     </div>
   </footer>
-  <script src="js/kalender.js" defer></script>
   <script src="js/sida.js" defer></script>
 </body>
 </html>

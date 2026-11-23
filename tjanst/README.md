@@ -1,8 +1,14 @@
 # Bokningstjänsten (förslag)
 
-> **FÖRSLAG.** Det här är en provversion. Den är inte beslutad av föreningen och används inte på
-> den publicerade sidan. Prova den bara med påhittade uppgifter. Bakgrunden står i
+> **UTVECKLAS INTE VIDARE (2026-11-23).** Bokningen sköts i Asamla i stället, se
+> [docs/beslut/bokning-via-asamla.md](../docs/beslut/bokning-via-asamla.md). Koden står kvar
+> som underlag. Den har aldrig använts på den publicerade sidan. Prova den bara med påhittade
+> uppgifter. Bakgrunden står i
 > [docs/beslut/tjanst-for-bokning.md](../docs/beslut/tjanst-for-bokning.md).
+>
+> När provet stängs: stoppa tjänsterna med
+> `systemctl --user disable --now kristvalla-newt kristvalla-tjanst kristvalla-hemsida kristvalla-epost`,
+> ta bort resurserna och sajten i Pangolin, och radera datamappen.
 
 Tjänsten bygger på [PocketBase](https://pocketbase.io) v0.40.6. Det är ett enda program med en
 inbyggd databas och en administrationssida. Det är öppen källkod (MIT-licens).
