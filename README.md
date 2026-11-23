@@ -45,7 +45,11 @@ Sidan delas i två delar, så att det viktigaste alltid fungerar:
 | Del | Innehåll | Om den går ner |
 |---|---|---|
 | **Statisk sida** | Startsida, kalender, fasta sidor | Händer i praktiken inte |
-| **Tjänst** (senare) | Inloggning för föreningen, bokning, redigering, nyhetsbrev | Sidan visar den senaste kalendern och "boka via e-post tills vidare" |
+| **Bokning i Asamla** | Lediga dagar och bokningsförfrågan. Sidan länkar dit | Den som vill hyra mejlar föreningen |
+| **Tjänst** (senare) | Inloggning för föreningen, redigering, nyhetsbrev | Sidan visar den senaste kalendern |
+
+Bokningen sköts i Asamla sedan 2026-11-23, se
+[docs/beslut/bokning-via-asamla.md](docs/beslut/bokning-via-asamla.md).
 
 Tekniken är inte vald ännu. Alternativen för var tjänsten ska köras:
 

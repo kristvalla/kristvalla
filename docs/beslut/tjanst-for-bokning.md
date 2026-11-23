@@ -1,7 +1,8 @@
 # Tjänst för bokningar
 
-> **Status: förslag, 2026-10-24.** Inte beslutat av föreningen. En provversion finns i
-> [tjanst/](../../tjanst/README.md). Den används inte på den publicerade sidan.
+> **Status: ersatt, 2026-11-23.** Bokningen sköts i Asamla i stället, se
+> [bokning-via-asamla.md](bokning-via-asamla.md). Förslaget nedan står kvar som underlag.
+> Provversionen i [tjanst/](../../tjanst/README.md) utvecklas inte vidare.
 
 ## Vad som ska lösas
 
@@ -112,4 +113,4 @@ vad det gäller och om personen säger sig vara medlem. Inget mer.
 
 ## Beslut
 
-- [ ] Föreningen beslutar om tjänsten: ⚠️ [datum, protokoll §]
+- [x] Ersatt av bokning via Asamla, 2026-11-23. Se [bokning-via-asamla.md](bokning-via-asamla.md).
