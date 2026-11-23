@@ -3,6 +3,9 @@
 > **Status: beslutat av den som sköter hemsidan, 2026-11-23.** ⚠️ Styrelsen behöver bekräfta att
 > föreningen använder Asamla för bokning: [datum, protokoll §].
 
+Styrelsen beslutade 2026-11-22 (§ 8.1) att Asamla är föreningens system och medlemsregister. Det
+gäller medlemskapet. Beslutet om bokning i Asamla är inte taget av styrelsen än.
+
 ## Beslut
 
 Föreningen behåller sin egen hemsida. Bokningen av bygdegården sköts i Asamla
