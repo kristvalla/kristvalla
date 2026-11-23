@@ -13,6 +13,19 @@
     if (!yta || !poster.length) return;
 
     var knappar = [];
+    var egenLank = document.getElementById("egen-lank");
+
+    // Länken under valen går till samma bokning på Asamlas egen sida, för den som inte vill
+    // scrolla i rutan. Adressen är inbäddningens adress utan "/embed".
+    function visaLank(adress, namn) {
+      if (!egenLank) return;
+      var lank = egenLank.querySelector("a");
+      var egen = adress.replace("/embed/org/", "/org/");
+      if (!lank || egen.indexOf(ASAMLA + "/org/") !== 0) return;
+      lank.href = egen;
+      lank.textContent = "Öppna " + namn + " på Asamlas egen sida";
+      egenLank.hidden = false;
+    }
 
     function visa(knapp) {
       var adress = knapp.getAttribute("data-embed");
@@ -21,6 +34,8 @@
       knappar.forEach(function (k) {
         k.setAttribute("aria-pressed", k === knapp ? "true" : "false");
       });
+      var namn = knapp.querySelector(".val-namn");
+      visaLank(adress, namn ? namn.textContent : "bokningen");
       var gammal = yta.querySelector("iframe");
       if (gammal) gammal.remove();
       var ram = document.createElement("iframe");

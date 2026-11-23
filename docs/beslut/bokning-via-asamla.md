@@ -33,7 +33,12 @@ och bokning. Undantaget står i [AGENTS.md](../../AGENTS.md), och sidan säger d
 standardtexten där. Det finns ett personuppgiftsbiträdesavtal, se nedan.
 
 - Varje bokningsalternativ visas som en ruta. Koden finns i [js/boka.js](../../js/boka.js).
-- Utan JavaScript visas en text som hänvisar till e-post.
+- Under valen finns en liten länk till samma bokning på Asamlas egen sida (2026-11-23).
+  Asamlas ruta börjar med en stor banner och en beskrivning, så formuläret ligger långt ner.
+  ⚠️ Kompakt läge är efterfrågat hos Asamla. När det finns: använd det och ta bort länken om
+  den inte behövs.
+- Utan JavaScript visas länkar till de tre bokningarna på Asamlas egen sida, och en hänvisning
+  till e-post.
 - Vi använder inte Asamlas eget skript `embed.js`. `js/boka.js` gör samma sak, att ändra rutans
   höjd, och godtar bara svar från Asamla.
 
