@@ -194,8 +194,7 @@ details h3 { margin-top: 1.25rem; }
 .val[aria-pressed="true"] .val-namn { color: var(--falu); }
 .val-tid { color: var(--dampad); font-size: .95rem; }
 .val-pris { margin-top: .4rem; font-weight: 600; }
-.egen-lank { margin: .75rem 0 0; font-size: .95rem; }
-.boka-yta { margin-top: 1rem; }
+.boka-yta { margin-top: 1.5rem; }
 .boka-yta iframe.boka-ram {
   display: block; width: 100%; max-width: 50rem; height: 40rem; border: 0; border-radius: var(--radie);
 }

@@ -40,8 +40,8 @@ standardtexten där. Det finns ett personuppgiftsbiträdesavtal, se nedan.
 - Supportens kod använder också `https://www.asamla.se/embed.js`. Det skriptet laddas inte här.
   Det skulle köra Asamlas kod på hela vår sida, och `js/boka.js` gör samma sak (ändrar rutans
   höjd) med en kontroll av avsändaren.
-- Under valen finns en liten länk till samma bokning på Asamlas egen sida (2026-11-23), utan
-  kompakt läge. Den kan tas bort om styrelsen tycker att den är onödig nu.
+- En liten länk under valen till Asamlas egen sida lades in 2026-11-23 som tillfällig lösning,
+  och togs bort 2026-11-24 när kompakt läge fanns.
 - Utan JavaScript visas länkar till de tre bokningarna på Asamlas egen sida, och en hänvisning
   till e-post.
 - Vi använder inte Asamlas eget skript `embed.js`. `js/boka.js` gör samma sak, att ändra rutans
