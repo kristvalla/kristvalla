@@ -78,7 +78,7 @@ p { margin: 0 0 1em; }
   font-family: var(--serif); font-size: 1.2rem; font-weight: 700;
   color: var(--falu); text-decoration: none; line-height: 1.2;
 }
-.logga { height: 3.2rem; width: auto; flex: none; border-radius: 6px; }
+.logga { height: 4.75rem; width: auto; flex: none; } /* emblemet, utskuret ur loggan */
 .namn small {
   display: block; font-family: var(--sans); font-weight: 400;
   font-size: .8rem; color: var(--dampad); letter-spacing: .02em;
@@ -215,6 +215,13 @@ ol.steg li { margin-bottom: .6rem; }
 /* Sidfot */
 .sidfot { border-top: 1px solid var(--linje); color: var(--dampad); font-size: .9rem; padding: 1.5rem 0 2.5rem; }
 .sidfot p { margin: 0 0 .3rem; }
+.facebook {
+  display: inline-flex; align-items: center; gap: .6rem; margin: .4rem 0;
+  padding: .45rem 1rem .45rem .45rem; border: 1px solid var(--linje); border-radius: 999px;
+  background: var(--kort); color: var(--text); font-weight: 600; text-decoration: none;
+}
+.facebook img { width: 2rem; height: 2rem; flex: none; }
+.facebook:hover { border-color: #0866ff; color: var(--text); }
 
 @media (max-width: 40rem) {
   h1 { font-size: 2.1rem; }
