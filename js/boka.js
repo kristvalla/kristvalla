@@ -20,7 +20,8 @@
     function visaLank(adress, namn) {
       if (!egenLank) return;
       var lank = egenLank.querySelector("a");
-      var egen = adress.replace("/embed/org/", "/org/");
+      // Utan "?compact=1": den egna sidan har inget kompakt läge.
+      var egen = adress.replace("/embed/org/", "/org/").split("?")[0];
       if (!lank || egen.indexOf(ASAMLA + "/org/") !== 0) return;
       lank.href = egen;
       lank.textContent = "Öppna " + namn + " på Asamlas egen sida";
@@ -41,6 +42,8 @@
       var ram = document.createElement("iframe");
       ram.className = "boka-ram";
       ram.title = knapp.getAttribute("data-titel") || "Bokning";
+      // Asamla ber om att rutan får använda betalning (Payment Request), för förskottsbetalningen.
+      ram.setAttribute("allow", "payment");
       ram.src = adress;
       yta.insertBefore(ram, yta.firstChild);
     }
