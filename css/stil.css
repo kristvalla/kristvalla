@@ -202,8 +202,9 @@ details h3 { margin-top: 1.25rem; }
 /* Bilder på lokalen (sidan Hyr bygdegården) */
 figure { margin: 0 0 1rem; }
 figcaption { color: var(--dampad); font-size: .95rem; padding-top: .35rem; }
-.bild-bred { max-width: 52rem; }
-.bild-bred img, .galleri img { display: block; width: 100%; height: auto; border-radius: var(--radie); }
+.bild-rad { display: grid; gap: 1rem; align-items: start; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); margin: 0 0 1rem; }
+.bild-rad figure { margin: 0; }
+.bild-rad img, .galleri img { display: block; width: 100%; height: auto; border-radius: var(--radie); }
 .galleri { display: grid; gap: 1rem; align-items: start; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); margin: 1rem 0; }
 .galleri figure { margin: 0; }
 
